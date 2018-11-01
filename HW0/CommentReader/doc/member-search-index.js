@@ -1,0 +1,1 @@
+memberSearchIndex = [{"p":"<Unnamed>","c":"CommentReader","l":"CommentReader()","url":"%3Cinit%3E()"},{"p":"<Unnamed>","c":"CommentReader","l":"HandleLine(String, boolean, boolean)","url":"HandleLine(java.lang.String,boolean,boolean)"},{"p":"<Unnamed>","c":"CommentReader","l":"main(String[])","url":"main(java.lang.String[])"}]

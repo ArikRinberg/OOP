@@ -5,10 +5,11 @@ public class TestClass {
 	private int i1; // A first number
 	private double d2; // Another number
 	
-	/* this explain a bit */ private int i3; /* explain more */ // Another comment
+	/* this explain a bit */ private int i3; /* explain more */
+	/* a comment */ // Another comment
 	
 	/**
-	 * @param d
+	 * description for test class
 	 */
 	public TestClass(double d)
 	{
@@ -26,6 +27,6 @@ public class TestClass {
 	
 	/* and another
 	 * multi
-	 * line /* will this break?
+	 * line /* explaining the line
 	 */
 }

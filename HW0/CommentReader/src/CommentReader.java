@@ -21,9 +21,9 @@ public class CommentReader {
 	final static String MultiLineCommentClose = "*/";
 	
 	/**
-	 * @param line
-	 * @param partOfMultiLine
-	 * @param printed
+	 * @param line desc
+	 * @param partOfMultiLine desc
+	 * @param printed desc
 	 * @effects Prints out all the comments in a line
 	 * @return True if a multi line comment was opened without being closed
 	 */
@@ -88,7 +88,7 @@ public class CommentReader {
 	}
 	
 	/**
-	 * @param args
+	 * @param args desc
 	 * @effects Searches for file that is passed as command line parameter, and prints to 
 	 * screen if the file was not found.
 	 */
