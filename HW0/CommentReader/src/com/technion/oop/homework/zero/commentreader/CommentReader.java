@@ -1,10 +1,13 @@
+package com.technion.oop.homework.zero.commentreader;
 import java.lang.String;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 
+
 /**
- * @author ArikRinberg
+ * @author Arik Rinberg
+ * @author Barak Zan
  *
  * This class will print out all the comments of a java file passed a command line parameter.
  * Legal comments are:
@@ -21,9 +24,9 @@ public class CommentReader {
 	final static String MultiLineCommentClose = "*/";
 	
 	/**
-	 * @param line desc
-	 * @param partOfMultiLine desc
-	 * @param printed desc
+	 * @param line Current line to handle
+	 * @param partOfMultiLine True if part of a multi line
+	 * @param printed true if we've printed somewhere for this line
 	 * @effects Prints out all the comments in a line
 	 * @return True if a multi line comment was opened without being closed
 	 */

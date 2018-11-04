@@ -1,3 +1,4 @@
+package com.technion.oop.homework.zero.balls;
 public class BallsTest{
 	
 	public static final double EPSILON = 0.00000001;

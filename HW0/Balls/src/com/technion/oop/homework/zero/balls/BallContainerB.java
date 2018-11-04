@@ -1,19 +1,21 @@
+package com.technion.oop.homework.zero.balls;
 import java.util.ArrayList;
 
 /**
  * A container that can be used to contain Balls. A given Ball may only
  * appear in a BallContainer once.
  */
-public class BallContainer {
+public class BallContainerB {
 	
 	private ArrayList<Ball> balls;
-	
+	private double sumVolumes;
     /**
      * @effects Creates a new BallContainer.
      */
-    public BallContainer() {
+    public BallContainerB() {
 		//TODO: Add your code here
     	balls = new ArrayList<Ball>();
+    	sumVolumes = 0;
     }
 
 
@@ -33,6 +35,7 @@ public class BallContainer {
     		return false;
     	}
     	balls.add(new Ball(ball));
+    	sumVolumes += ball.getVolume();
     	return true;
     }
 
@@ -55,6 +58,7 @@ public class BallContainer {
     		if (b.getVolume() == ball.getVolume())
     		{
     			balls.remove(i);
+    			sumVolumes -= ball.getVolume();
     			return true;
     		}
     	}
@@ -68,12 +72,8 @@ public class BallContainer {
      */
     public double getVolume() {
 		// TODO: Add your code here
-    	double sum = 0;
-    	for (Ball ball : balls)
-    	{
-    		sum += ball.getVolume();
-    	}
-		return sum;
+    	return sumVolumes;
+
     }
 
 
@@ -91,6 +91,7 @@ public class BallContainer {
      * @effects Empties the container, i.e. removes all its contents.
      */
     public void clear() {
+    	sumVolumes = 0;
     	balls.clear();
     }
 

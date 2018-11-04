@@ -1,28 +1,27 @@
+package com.technion.oop.homework.zero.commentreader;
 /*
  * Comment on a class
  */
 public class TestClass {
-	private int i1; // A first number
-	private double d2; // Another number
+	private int _i1; // A first number
 	
-	/* this explain a bit */ private int i3; /* explain more */
+	/* this explain a bit */ private int _i3; /* explain more */
 	/* a comment */ // Another comment
 	
 	/**
 	 * description for test class
 	 */
-	public TestClass(double d)
+	public TestClass()
 	{
-		i1 = 1;
-		d2 = d;
-		i3 = 1;
+		_i1 = 1;
+		_i3 = 1;
 	}
 	
 	// Will this be fine /*
 	public int sum()
 	{
 		// Returns a value
-		return i1 + i3;
+		return _i1 + _i3;
 	}
 	
 	/* and another
