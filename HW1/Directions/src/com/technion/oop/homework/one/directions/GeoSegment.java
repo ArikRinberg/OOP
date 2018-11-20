@@ -44,6 +44,9 @@ public class GeoSegment  {
 	
   	// TODO Write abstraction function and representation invariant
 	
+	private String _name;
+	private GeoPoint _point1;
+	private GeoPoint _point2;
 	
   	/**
      * Constructs a new GeoSegment with the specified name and endpoints.
@@ -52,6 +55,9 @@ public class GeoSegment  {
      **/
   	public GeoSegment(String name, GeoPoint p1, GeoPoint p2) {
   		// TODO Implement this method
+  		_name = name;
+  		_point1 = p1;
+  		_point2 = p2;
   	}
 
 
@@ -62,6 +68,7 @@ public class GeoSegment  {
      **/
   	public GeoSegment reverse() {
   		// TODO Implement this method
+  		return new GeoSegment(_name, _point2, _point1);
   	}
 
 
@@ -71,6 +78,7 @@ public class GeoSegment  {
      */
   	public String getName() {
   		// TODO Implement this method
+  		return _name;
   	}
 
 
@@ -80,6 +88,7 @@ public class GeoSegment  {
      */
   	public GeoPoint getP1() {
   		// TODO Implement this method
+  		return _point1;
   	}
 
 
@@ -89,6 +98,7 @@ public class GeoSegment  {
      */
   	public GeoPoint getP2() {
   		// TODO Implement this method
+  		return _point2;
   	}
 
 
@@ -99,6 +109,7 @@ public class GeoSegment  {
      */
   	public double getLength() {
   		// TODO Implement this method
+  		return _point1.distanceTo(_point2);
   	}
 
 
@@ -110,6 +121,7 @@ public class GeoSegment  {
      **/
   	public double getHeading() {
   		// TODO Implement this method
+  		return _point1.headingTo(_point2);
   	}
 
 
@@ -120,6 +132,19 @@ public class GeoSegment  {
    	 **/
   	public boolean equals(Object gs) {
   		// TODO Implement this method
+  		if (gs == null)
+  		{
+  			return false;
+  		}
+  		
+  		if (!(gs instanceof GeoSegment))
+  		{
+  			return false;
+  		}
+  		GeoSegment convertedGs = (GeoSegment)gs;
+  		return _name == convertedGs._name 
+  				&& _point1 == convertedGs._point1 
+  				&& _point2 == convertedGs._point2;
   	}
 
 
@@ -130,8 +155,8 @@ public class GeoSegment  {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it 
     	// for improved performance. 
-
-    	return 1;
+  		
+    	return _name.hashCode() ^ _point1.hashCode() ^ _point2.hashCode();
   	}
 
 
@@ -141,6 +166,7 @@ public class GeoSegment  {
      **/
   	public String toString() {
   		// TODO Implement this method
+  		return "(" + _name + ", " + _point1+ ", " + _point2 + ")";
   	}
 
 }
