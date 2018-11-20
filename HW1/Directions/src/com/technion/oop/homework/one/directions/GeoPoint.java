@@ -29,7 +29,10 @@ package homework1;
  * </pre>
  **/
 public class GeoPoint {
-
+	
+	private int _latitude;
+	private int _longitude;
+	
 	/** Minimum value the latitude field can have in this class. **/
 	public static final int MIN_LATITUDE  =  -90 * 1000000;
 	    
@@ -64,9 +67,15 @@ public class GeoPoint {
 	// and distance computations). Because of this, you should consider 
 	// using ints for your internal representation of GeoPoint. 
 
+  	// Abstraction Function:
+  	// A GeoPoint p is NaN if:
+  	// 1. latitude isn't within the range [MIN_LATITUDE,MAX_LATITUDE]
+  	// 2. longitude isn't within the range [MIN_LONGITUDE,MAX_LONGITUDE]
+  	// Otherwise is a point (latitude, longitude) in millionths of a degree
   	
-  	// TODO Write abstraction function and representation invariant
-  	
+  	// Representation invariant for every GeoPoint p:
+  	// 1. MIN_LATITUDE <= latitude <= MAX_LATITUDE
+  	// 2. MIN_LONGITUDE <= longitude <= MAX_LONGITUDE  	
   	
   	/**
   	 * Constructs GeoPoint from a latitude and longitude.
@@ -78,7 +87,8 @@ public class GeoPoint {
      *          given in millionths of degrees.
    	 **/
   	public GeoPoint(int latitude, int longitude) {
-  		// TODO Implement this constructor
+  		_latitude = latitude;
+  		_longitude = longitude;
   	}
 
   	 
@@ -87,7 +97,7 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLatitude() {
-  		// TODO Implement this method
+  		return _latitude;
   	}
 
 
@@ -96,7 +106,7 @@ public class GeoPoint {
      * @return the latitude of this in millionths of degrees.
      */
   	public int getLongitude() {
-  		// TODO Implement this method
+  		return _longitude;
   	}
 
 
@@ -108,6 +118,9 @@ public class GeoPoint {
      **/
   	public double distanceTo(GeoPoint gp) {
   		// TODO Implement this method
+  		double latitudeDelta = Math.abs((gp.getLatitude() - getLatitude()) / 1000000.0);
+  		double longitudeDelta = Math.abs((gp.getLongitude() - getLongitude()) / 1000000.0);
+  		return (latitudeDelta * KM_PER_DEGREE_LATITUDE) + (longitudeDelta * KM_PER_DEGREE_LONGITUDE);
   	}
 
 
@@ -140,7 +153,16 @@ public class GeoPoint {
      * 		   gp.latitude = this.latitude && gp.longitude = this.longitude
      **/
   	public boolean equals(Object gp) {
-  		// TODO Implement this method
+  		if (gp == null)
+  		{
+  			return false;
+  		}
+  		if (!(gp instanceof GeoPoint))
+  		{
+  			return false;
+  		}
+  		GeoPoint convertedGp = (GeoPoint)gp;
+  		return (convertedGp._latitude == _latitude) && (convertedGp._longitude == _longitude);
   	}
 
 
@@ -151,7 +173,6 @@ public class GeoPoint {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it
     	// for improved performance.
-
     	return 1;
   	}
 
@@ -161,7 +182,12 @@ public class GeoPoint {
      * @return a string representation of this GeoPoint.
      **/
   	public String toString() {
-  		// TODO Implement this method
+  		int latitudeDegrees = _latitude / 1000000;
+  		int latitudeMillionthDegrees = _longitude % 1000000;
+  		int longitudeDegrees = _longitude / 1000000;
+  		int longitudeMillionthDegrees = _longitude % 1000000;
+  		return "latitude : " + latitudeDegrees + "." + latitudeMillionthDegrees + 
+  				", longitude : " + longitudeDegrees + "." + longitudeMillionthDegrees;
   	}
 
 }
