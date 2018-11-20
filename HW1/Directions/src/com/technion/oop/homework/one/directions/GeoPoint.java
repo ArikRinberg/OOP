@@ -1,4 +1,4 @@
-package homework1;
+package com.technion.oop.homework.one.directions;
 
 /**
  * A GeoPoint is a point on the earth. GeoPoints are immutable.
@@ -143,7 +143,29 @@ public class GeoPoint {
 		 // mathematical convention, "east" is 0 degrees, and degrees
 		 // increase in the counterclockwise direction. 
 		 
-  		// TODO Implement this method
+  		double deltaLatitude = (gp._latitude - _latitude) / 1000000.0;
+  		double deltaLongitude = gp._longitude - _longitude / 1000000.0;
+  		
+  		// Calculate theta in radians moving 0 degrees to north, and multiple by -1 to
+  		//  reverse counterclockwise spin
+  		double thetaInRadians = (Math.atan2(deltaLatitude, deltaLongitude) - Math.PI/2) * -1;
+  		
+  		// Convert to degrees
+  		double thetaInDegrees = (thetaInRadians / Math.PI) * 180;
+  		
+  		// Edge case, 0.0*-1 = -0.0
+  		if (thetaInDegrees == -0.0)
+  		{
+  			thetaInDegrees = 0.0;
+  		}
+  		
+  		// Turn negative degrees to positive by adding 360 degrees
+  		if (thetaInDegrees < 0)
+  		{
+  			thetaInDegrees += 360;
+  		}
+  		
+  		return thetaInDegrees;
   	}
 
 
@@ -173,7 +195,7 @@ public class GeoPoint {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it
     	// for improved performance.
-    	return 1;
+    	return _latitude + _longitude;
   	}
 
 

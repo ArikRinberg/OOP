@@ -1,4 +1,4 @@
-package homework1;
+package com.technion.oop.homework.one.directions;
 
 public class WalkingRouteFormatterTest {
 	
