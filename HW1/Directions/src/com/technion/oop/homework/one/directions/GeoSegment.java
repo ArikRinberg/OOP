@@ -1,5 +1,7 @@
 package com.technion.oop.homework.one.directions;
 
+import java.awt.event.PaintEvent;
+
 /**
  * A GeoSegment models a straight line segment on the earth. GeoSegments 
  * are immutable.
@@ -39,7 +41,7 @@ package com.technion.oop.homework.one.directions;
  *   heading : angle     // compass heading from p1 to p2, in degrees
  * </pre>
  **/
-public class GeoSegment  {
+public class GeoSegment {
 
 	
   	// TODO Write abstraction function and representation invariant
@@ -77,7 +79,6 @@ public class GeoSegment  {
      * @return the name of this GeoSegment.
      */
   	public String getName() {
-  		// TODO Implement this method
   		return _name;
   	}
 
@@ -87,7 +88,6 @@ public class GeoSegment  {
      * @return first endpoint of the segment.
      */
   	public GeoPoint getP1() {
-  		// TODO Implement this method
   		return _point1;
   	}
 
@@ -97,7 +97,6 @@ public class GeoSegment  {
      * @return second endpoint of the segment.
      */
   	public GeoPoint getP2() {
-  		// TODO Implement this method
   		return _point2;
   	}
 
@@ -108,7 +107,6 @@ public class GeoSegment  {
      *         Technion approximation.
      */
   	public double getLength() {
-  		// TODO Implement this method
   		return _point1.distanceTo(_point2);
   	}
 
@@ -120,7 +118,6 @@ public class GeoSegment  {
      *         flat-surface, near the Technion approximation.
      **/
   	public double getHeading() {
-  		// TODO Implement this method
   		return _point1.headingTo(_point2);
   	}
 
@@ -155,7 +152,7 @@ public class GeoSegment  {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it 
     	// for improved performance. 
-  		
+  		// TODO this will cause clash between gp and reversed gp
     	return _name.hashCode() ^ _point1.hashCode() ^ _point2.hashCode();
   	}
 
@@ -165,8 +162,7 @@ public class GeoSegment  {
      * @return a string representation of this.
      **/
   	public String toString() {
-  		// TODO Implement this method
-  		return "(" + _name + ", " + _point1+ ", " + _point2 + ")";
+  		return "(" + _name + ", from: " + _point1+ ", to: " + _point2 + ")";
   	}
 
 }

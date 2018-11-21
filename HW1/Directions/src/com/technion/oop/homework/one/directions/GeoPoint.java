@@ -87,6 +87,11 @@ public class GeoPoint {
      *          given in millionths of degrees.
    	 **/
   	public GeoPoint(int latitude, int longitude) {
+  		if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE ||
+  				longitude < MIN_LONGITUDE || longitude > MAX_LATITUDE)
+  		{
+  			return;
+  		}
   		_latitude = latitude;
   		_longitude = longitude;
   	}
@@ -118,9 +123,12 @@ public class GeoPoint {
      **/
   	public double distanceTo(GeoPoint gp) {
   		// TODO Implement this method
-  		double latitudeDelta = Math.abs((gp.getLatitude() - getLatitude()) / 1000000.0);
-  		double longitudeDelta = Math.abs((gp.getLongitude() - getLongitude()) / 1000000.0);
-  		return (latitudeDelta * KM_PER_DEGREE_LATITUDE) + (longitudeDelta * KM_PER_DEGREE_LONGITUDE);
+  		double latitudeDelta = Math.abs((gp._latitude - _latitude) / 1000000.0);
+  		double longitudeDelta = Math.abs((gp._longitude - _longitude) / 1000000.0);
+  		double deltaLatitudeLength = latitudeDelta * KM_PER_DEGREE_LATITUDE;
+  		double deltaLongitudeLength =  longitudeDelta * KM_PER_DEGREE_LONGITUDE;
+  		return Math.sqrt(deltaLatitudeLength*deltaLatitudeLength 
+  				+ deltaLongitudeLength*deltaLongitudeLength);
   	}
 
 
@@ -144,7 +152,9 @@ public class GeoPoint {
 		 // increase in the counterclockwise direction. 
 		 
   		double deltaLatitude = (gp._latitude - _latitude) / 1000000.0;
-  		double deltaLongitude = gp._longitude - _longitude / 1000000.0;
+  		double deltaLongitude = (gp._longitude - _longitude) / 1000000.0;
+  		
+  		//TODO: Alter to KM from lat and long
   		
   		// Calculate theta in radians moving 0 degrees to north, and multiple by -1 to
   		//  reverse counterclockwise spin
@@ -195,6 +205,7 @@ public class GeoPoint {
   	public int hashCode() {
     	// This implementation will work, but you may want to modify it
     	// for improved performance.
+  		//TODO: Improve this, maybe use ( y >> 16 ) ^ x
     	return _latitude + _longitude;
   	}
 

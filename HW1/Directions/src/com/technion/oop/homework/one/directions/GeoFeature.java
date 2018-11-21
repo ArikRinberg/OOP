@@ -1,6 +1,7 @@
 package com.technion.oop.homework.one.directions;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * A GeoFeature represents a route from one location to another along a
@@ -47,8 +48,10 @@ public class GeoFeature {
 	
 	
   	// TODO Write abstraction function and representation invariant
+	private String _name;
+	private double _totalLength;
+	private LinkedList<GeoSegment> _geoSegments;
 
-	
 	/**
      * Constructs a new GeoFeature.
      * @requires gs != null
@@ -61,6 +64,18 @@ public class GeoFeature {
      **/
   	public GeoFeature(GeoSegment gs) {
   		// TODO Implement this constructor
+  		_name = gs.getName();
+  		_geoSegments = new LinkedList<GeoSegment>();
+
+  		_geoSegments.add(gs);
+  		_totalLength = gs.getLength();
+  	}
+  	
+  	private GeoFeature(GeoFeature source)
+  	{
+  		_name = source._name;
+  		_geoSegments = new LinkedList<GeoSegment>(_geoSegments);
+  		_totalLength = source._totalLength;
   	}
   
 
@@ -69,7 +84,7 @@ public class GeoFeature {
       * @return name of geographic feature
       */
   	public String getName() {
-  		// TODO Implement this method
+  		return _name;
   	}
 
 
@@ -78,7 +93,7 @@ public class GeoFeature {
      * @return location of the start of the geographic feature.
      */
   	public GeoPoint getStart() {
-  		// TODO Implement this method
+  		return _geoSegments.getFirst().getP1();
   	}
 
 
@@ -87,7 +102,7 @@ public class GeoFeature {
      * @return location of the end of the geographic feature.
      */
   	public GeoPoint getEnd() {
-  		// TODO Implement this method
+  		return _geoSegments.getLast().getP2();
   	}
 
 
@@ -97,7 +112,7 @@ public class GeoFeature {
      *         geographic feature, in degrees.
      */
   	public double getStartHeading() {
-  		// TODO Implement this method
+  		return _geoSegments.getFirst().getHeading();
   	}
 
 
@@ -107,7 +122,7 @@ public class GeoFeature {
      *         geographic feature, in degrees.
      */
   	public double getEndHeading() {
-  		// TODO Implement this method
+  		return _geoSegments.getLast().getHeading();
   	}
 
 
@@ -119,7 +134,7 @@ public class GeoFeature {
      *         values are not necessarily equal.
      */
   	public double getLength() {
-  		// TODO Implement this method
+  		return _totalLength;
   	}
 
 
