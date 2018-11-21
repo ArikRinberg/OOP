@@ -36,7 +36,8 @@ import java.util.LinkedList;
  *   length : real          // total length of the geographic feature, in kilometers
  * </pre>
  **/
-public class GeoFeature {
+public class GeoFeature
+{
 	
 	// Implementation hint:
 	// When asked to return an Iterator, consider using the iterator() method
@@ -62,20 +63,46 @@ public class GeoFeature {
      *          r.start = gs.p1 &&
      *          r.end = gs.p2
      **/
-  	public GeoFeature(GeoSegment gs) {
-  		// TODO Implement this constructor
+  	public GeoFeature(GeoSegment gs)
+  	{
+  		assert gs != null : "gs cannot be null";
+ 		
   		_name = gs.getName();
   		_geoSegments = new LinkedList<GeoSegment>();
-
   		_geoSegments.add(gs);
   		_totalLength = gs.getLength();
+  		
+  		checkRep();
+  	}
+ 
+  	
+  	private GeoFeature(GeoFeature sorce)
+  	{
+  		_name = sorce._name;
+  		_geoSegments = new LinkedList<GeoSegment>(sorce._geoSegments);
+  		_totalLength = sorce._totalLength;
+  		
+  		checkRep();
   	}
   	
-  	private GeoFeature(GeoFeature source)
+  	
+  	private void checkRep()
   	{
-  		_name = source._name;
-  		_geoSegments = new LinkedList<GeoSegment>(_geoSegments);
-  		_totalLength = source._totalLength;
+  		assert _geoSegments != null : "GeoFeature mast have GeoSegments";
+  		
+  		double len = 0;
+  		GeoPoint p = getStart();
+  		for (GeoSegment segment : _geoSegments)
+  		{
+  			assert segment.getName() == _name :
+  				"all segments name must be same as GeoFeatures name";
+  			assert segment.getP1().equals(p) : 
+  				"segments end point must be the same as next segments start point";
+  			p = segment.getP2();
+  			len += segment.getLength();
+		}
+  		assert len == _totalLength :
+  			"total length must be sum of all the segments lenght";
   	}
   
 
@@ -83,7 +110,8 @@ public class GeoFeature {
  	  * Returns name of geographic feature.
       * @return name of geographic feature
       */
-  	public String getName() {
+  	public String getName() 
+  	{
   		return _name;
   	}
 
@@ -92,7 +120,8 @@ public class GeoFeature {
   	 * Returns location of the start of the geographic feature.
      * @return location of the start of the geographic feature.
      */
-  	public GeoPoint getStart() {
+  	public GeoPoint getStart() 
+  	{
   		return _geoSegments.getFirst().getP1();
   	}
 
@@ -101,7 +130,8 @@ public class GeoFeature {
   	 * Returns location of the end of the geographic feature.
      * @return location of the end of the geographic feature.
      */
-  	public GeoPoint getEnd() {
+  	public GeoPoint getEnd()
+  	{
   		return _geoSegments.getLast().getP2();
   	}
 
@@ -111,7 +141,8 @@ public class GeoFeature {
      * @return direction (in standard heading) of travel at the start of the
      *         geographic feature, in degrees.
      */
-  	public double getStartHeading() {
+  	public double getStartHeading()
+  	{
   		return _geoSegments.getFirst().getHeading();
   	}
 
@@ -121,7 +152,8 @@ public class GeoFeature {
      * @return direction (in standard heading) of travel at the end of the
      *         geographic feature, in degrees.
      */
-  	public double getEndHeading() {
+  	public double getEndHeading()
+  	{
   		return _geoSegments.getLast().getHeading();
   	}
 
@@ -133,7 +165,8 @@ public class GeoFeature {
      *         distance required to traverse the geographic feature. These
      *         values are not necessarily equal.
      */
-  	public double getLength() {
+  	public double getLength()
+  	{
   		return _totalLength;
   	}
 
@@ -147,8 +180,14 @@ public class GeoFeature {
      *         r.endHeading = gs.heading &&
      *    	   r.length = this.length + gs.length
      **/
-  	public GeoFeature addSegment(GeoSegment gs) {
-  		// TODO Implement this method
+  	public GeoFeature addSegment(GeoSegment gs) 
+  	{
+  		GeoFeature gf = new GeoFeature(this);
+  		gf._geoSegments.addLast(gs);
+  		gf._totalLength += gs.getLength();
+  		
+  		gf.checkRep();
+  		return gf;
   	}
 
 
@@ -170,8 +209,10 @@ public class GeoFeature {
      * where <code>a[n]</code> denotes the nth element of the Iterator.
      * @see homework1.GeoSegment
      */
-  	public Iterator<GeoSegment> getGeoSegments() {
-  		// TODO Implement this method
+  	public Iterator<GeoSegment> getGeoSegments() 
+  	{
+  		// TODO: Arik, what do you think, thats it?
+  		return _geoSegments.iterator();
   	}
 
 
@@ -181,8 +222,16 @@ public class GeoFeature {
      *         (o.geoSegments and this.geoSegments contain
      *          the same elements in the same order).
      **/
-  	public boolean equals(Object o) {
-  		// TODO Implement this method
+  	public boolean equals(Object o)
+  	{
+  		if (o == null || !(o instanceof GeoFeature))
+  		{
+  			return false;
+  		}
+  		GeoFeature gf = (GeoFeature)o;
+  		return _name.equals(gf._name) &&
+  				_totalLength == gf._totalLength &&
+  				_geoSegments.equals(gf._geoSegments);
   	}
 
 
@@ -190,11 +239,20 @@ public class GeoFeature {
      * Returns a hash code for this.
      * @return a hash code for this.
      **/
-  	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// improved performance.
-    	
-    	return 1;
+  	public int hashCode() 
+  	{
+  		final int S = Integer.SIZE;
+  		int bits, i = 0;
+    	int hash = _name.hashCode();
+   
+    	for (GeoSegment segment : _geoSegments)
+    	{
+			bits = segment.hashCode() + i;
+			// XOR after cyclic bit shift
+			hash ^= (bits >>> i%S) | (bits << (S - i%S)); 
+			i ++;
+		}
+    	return hash;
   	}
 
 
@@ -202,7 +260,16 @@ public class GeoFeature {
   	 * Returns a string representation of this.
    	 * @return a string representation of this.
      **/
-  	public String toString() {
-  		// TODO Implement this method
+  	public String toString() 
+  	{
+  		StringBuffer sb = new StringBuffer();
+  		sb.append("GeoFeature: " + _name + "\n");
+  		sb.append("leangth: " + _totalLength + "\n");
+  		sb.append("route is: ");
+  		for (GeoSegment segment : _geoSegments) {
+			sb.append(segment.getP1() + " -> ");
+		}
+  		sb.append(getEnd() + "\n");
+  		return new String(sb);
   	}
 }

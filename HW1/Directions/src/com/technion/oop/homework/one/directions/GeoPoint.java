@@ -28,7 +28,8 @@ package com.technion.oop.homework.one.directions;
  *   longitude : real        // longitude measured in degrees
  * </pre>
  **/
-public class GeoPoint {
+public class GeoPoint
+{
 	
 	private int _latitude;
 	private int _longitude;
@@ -86,14 +87,23 @@ public class GeoPoint {
    	 * @effects constructs a GeoPoint from a latitude and longitude
      *          given in millionths of degrees.
    	 **/
-  	public GeoPoint(int latitude, int longitude) {
-  		if (latitude < MIN_LATITUDE || latitude > MAX_LATITUDE ||
-  				longitude < MIN_LONGITUDE || longitude > MAX_LATITUDE)
-  		{
-  			return;
-  		}
+  	public GeoPoint(int latitude, int longitude) 
+  	{ 		
   		_latitude = latitude;
   		_longitude = longitude;
+  		checkRep();
+  	}
+  	
+  	private void checkRep()
+  	{
+  		assert _latitude < MIN_LATITUDE :
+  			"latitude cannot be smaller then " + MIN_LATITUDE;
+  		assert _latitude > MAX_LATITUDE :
+  			"latitude cannot be larger then " + MAX_LATITUDE;
+  		assert _longitude < MIN_LONGITUDE :
+  			"longitude cannot be smaller then " + MIN_LONGITUDE;
+  		assert _longitude > MAX_LATITUDE :
+  			"longitude cannot be larger then " + MAX_LONGITUDE;
   	}
 
   	 
@@ -101,7 +111,8 @@ public class GeoPoint {
      * Returns the latitude of this.
      * @return the latitude of this in millionths of degrees.
      */
-  	public int getLatitude() {
+  	public int getLatitude()
+  	{
   		return _latitude;
   	}
 
@@ -110,7 +121,8 @@ public class GeoPoint {
      * Returns the longitude of this.
      * @return the latitude of this in millionths of degrees.
      */
-  	public int getLongitude() {
+  	public int getLongitude()
+  	{
   		return _longitude;
   	}
 
@@ -121,14 +133,12 @@ public class GeoPoint {
      * @return the distance from this to gp, using the flat-surface, near
      *         the Technion approximation.
      **/
-  	public double distanceTo(GeoPoint gp) {
-  		// TODO Implement this method
-  		double latitudeDelta = Math.abs((gp._latitude - _latitude) / 1000000.0);
-  		double longitudeDelta = Math.abs((gp._longitude - _longitude) / 1000000.0);
-  		double deltaLatitudeLength = latitudeDelta * KM_PER_DEGREE_LATITUDE;
-  		double deltaLongitudeLength =  longitudeDelta * KM_PER_DEGREE_LONGITUDE;
-  		return Math.sqrt(deltaLatitudeLength*deltaLatitudeLength 
-  				+ deltaLongitudeLength*deltaLongitudeLength);
+  	public double distanceTo(GeoPoint gp)
+  	{
+  		double latitudeDistance = GetLatitudeDistanceInKM(this, gp);
+  		double longitudeDistance = GetLongitudeDistanceInKM(this, gp);
+  		return Math.sqrt(Math.pow(latitudeDistance, 2) 
+  				+ Math.pow(longitudeDistance, 2));
   	}
 
 
@@ -140,7 +150,8 @@ public class GeoPoint {
      *         0 <= h < 360. In compass headings, north = 0, east = 90,
      *         south = 180, and west = 270.
      **/
-  	public double headingTo(GeoPoint gp) {
+  	public double headingTo(GeoPoint gp) 
+  	{
 		 //	Implementation hints:
 		 // 1. You may find the mehtod Math.atan2() useful when
 		 // implementing this method. More info can be found at:
@@ -151,14 +162,12 @@ public class GeoPoint {
 		 // mathematical convention, "east" is 0 degrees, and degrees
 		 // increase in the counterclockwise direction. 
 		 
-  		double deltaLatitude = (gp._latitude - _latitude) / 1000000.0;
-  		double deltaLongitude = (gp._longitude - _longitude) / 1000000.0;
-  		
-  		//TODO: Alter to KM from lat and long
-  		
+  		double latitudeDistance = GetLatitudeDistanceInKM(this, gp);
+  		double longitudeDistance = GetLongitudeDistanceInKM(this, gp);
+  			
   		// Calculate theta in radians moving 0 degrees to north, and multiple by -1 to
   		//  reverse counterclockwise spin
-  		double thetaInRadians = (Math.atan2(deltaLatitude, deltaLongitude) - Math.PI/2) * -1;
+  		double thetaInRadians = (Math.atan2(latitudeDistance, longitudeDistance) - Math.PI/2) * -1;
   		
   		// Convert to degrees
   		double thetaInDegrees = (thetaInRadians / Math.PI) * 180;
@@ -184,12 +193,9 @@ public class GeoPoint {
      * @return gp != null && (gp instanceof GeoPoint) &&
      * 		   gp.latitude = this.latitude && gp.longitude = this.longitude
      **/
-  	public boolean equals(Object gp) {
-  		if (gp == null)
-  		{
-  			return false;
-  		}
-  		if (!(gp instanceof GeoPoint))
+  	public boolean equals(Object gp)
+  	{
+  		if (gp == null || !(gp instanceof GeoPoint))
   		{
   			return false;
   		}
@@ -197,16 +203,14 @@ public class GeoPoint {
   		return (convertedGp._latitude == _latitude) && (convertedGp._longitude == _longitude);
   	}
 
-
+  	
   	/**
      * Returns a hash code value for this GeoPoint.
      * @return a hash code value for this GeoPoint.
    	 **/
-  	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// for improved performance.
-  		//TODO: Improve this, maybe use ( y >> 16 ) ^ x
-    	return _latitude + _longitude;
+  	public int hashCode()
+  	{
+    	return ( (_latitude >> 16) + (_latitude << 16) ) ^ _longitude;
   	}
 
 
@@ -223,4 +227,13 @@ public class GeoPoint {
   				", longitude : " + longitudeDegrees + "." + longitudeMillionthDegrees;
   	}
 
+  	private static double GetLatitudeDistanceInKM(GeoPoint a, GeoPoint b)
+  	{
+  		return Math.abs(a.getLatitude() - b.getLatitude()) * KM_PER_DEGREE_LATITUDE / 1000000;
+  	}
+  	
+  	private static double GetLongitudeDistanceInKM(GeoPoint a, GeoPoint b)
+  	{
+  		return Math.abs(a.getLongitude() - b.getLongitude()) * KM_PER_DEGREE_LONGITUDE / 1000000;
+  	}
 }
