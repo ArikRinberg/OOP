@@ -94,12 +94,12 @@ public class GeoFeature
   		GeoPoint p = getStart();
   		for (GeoSegment segment : _geoSegments)
   		{
+  			len += segment.getLength();
   			assert segment.getName() == _name :
   				"all segments name must be same as GeoFeatures name";
   			assert segment.getP1().equals(p) : 
   				"segments end point must be the same as next segments start point";
   			p = segment.getP2();
-  			len += segment.getLength();
 		}
   		assert len == _totalLength :
   			"total length must be sum of all the segments lenght";
@@ -229,8 +229,8 @@ public class GeoFeature
   			return false;
   		}
   		GeoFeature gf = (GeoFeature)o;
-  		return _name.equals(gf._name) &&
-  				_totalLength == gf._totalLength &&
+  		return _totalLength == gf._totalLength &&
+  				_name.equals(gf._name) &&
   				_geoSegments.equals(gf._geoSegments);
   	}
 
@@ -263,9 +263,7 @@ public class GeoFeature
   	public String toString() 
   	{
   		StringBuffer sb = new StringBuffer();
-  		sb.append("GeoFeature: " + _name + "\n");
-  		sb.append("leangth: " + _totalLength + "\n");
-  		sb.append("route is: ");
+  		sb.append("GeoFeature: " + _name + " ,leangth: "+ _totalLength + "\n");
   		for (GeoSegment segment : _geoSegments) {
 			sb.append(segment.getP1() + " -> ");
 		}

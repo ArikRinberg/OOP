@@ -41,7 +41,8 @@ import java.awt.event.PaintEvent;
  *   heading : angle     // compass heading from p1 to p2, in degrees
  * </pre>
  **/
-public class GeoSegment {
+public class GeoSegment 
+{
 
 	
   	// TODO Write abstraction function and representation invariant
@@ -49,17 +50,31 @@ public class GeoSegment {
 	private String _name;
 	private GeoPoint _point1;
 	private GeoPoint _point2;
+	private double _heading;
+	private double _lengh;
 	
   	/**
      * Constructs a new GeoSegment with the specified name and endpoints.
      * @requires name != null && p1 != null && p2 != null
      * @effects constructs a new GeoSegment with the specified name and endpoints.
      **/
-  	public GeoSegment(String name, GeoPoint p1, GeoPoint p2) {
+  	public GeoSegment(String name, GeoPoint p1, GeoPoint p2) 
+  	{
   		// TODO Implement this method
   		_name = name;
   		_point1 = p1;
   		_point2 = p2;
+  		_heading = _point1.headingTo(_point2);
+  		_lengh = _point1.distanceTo(_point2);
+  		
+  		checkRep();
+  	}
+  	
+  	private void checkRep()
+  	{
+  		assert !_name.isEmpty() : "GeoSegment must have a name";
+  		assert _heading == _point1.headingTo(_point2);
+  		assert _lengh == _point1.distanceTo(_point2);
   	}
 
 
@@ -68,8 +83,8 @@ public class GeoSegment {
      * @return a new GeoSegment gs such that gs.name = this.name
      *         && gs.p1 = this.p2 && gs.p2 = this.p1
      **/
-  	public GeoSegment reverse() {
-  		// TODO Implement this method
+  	public GeoSegment reverse() 
+  	{
   		return new GeoSegment(_name, _point2, _point1);
   	}
 
@@ -78,7 +93,8 @@ public class GeoSegment {
   	 * Returns the name of this GeoSegment.
      * @return the name of this GeoSegment.
      */
-  	public String getName() {
+  	public String getName() 
+  	{
   		return _name;
   	}
 
@@ -87,7 +103,8 @@ public class GeoSegment {
   	 * Returns first endpoint of the segment.
      * @return first endpoint of the segment.
      */
-  	public GeoPoint getP1() {
+  	public GeoPoint getP1() 
+  	{
   		return _point1;
   	}
 
@@ -96,7 +113,8 @@ public class GeoSegment {
   	 * Returns second endpoint of the segment.
      * @return second endpoint of the segment.
      */
-  	public GeoPoint getP2() {
+  	public GeoPoint getP2() 
+  	{
   		return _point2;
   	}
 
@@ -106,8 +124,9 @@ public class GeoSegment {
      * @return the length of the segment, using the flat-surface, near the
      *         Technion approximation.
      */
-  	public double getLength() {
-  		return _point1.distanceTo(_point2);
+  	public double getLength()
+  	{
+  		return _lengh;
   	}
 
 
@@ -117,8 +136,9 @@ public class GeoSegment {
      * @return the compass heading from p1 to p2, in degrees, using the
      *         flat-surface, near the Technion approximation.
      **/
-  	public double getHeading() {
-  		return _point1.headingTo(_point2);
+  	public double getHeading() 
+  	{
+  		return _heading;
   	}
 
 
@@ -127,21 +147,18 @@ public class GeoSegment {
      * @return gs != null && (gs instanceof GeoSegment)
      *         && gs.name = this.name && gs.p1 = this.p1 && gs.p2 = this.p2
    	 **/
-  	public boolean equals(Object gs) {
+  	public boolean equals(Object obj)
+  	{
   		// TODO Implement this method
-  		if (gs == null)
+  		if (obj == null || !(obj instanceof GeoSegment))
   		{
   			return false;
   		}
   		
-  		if (!(gs instanceof GeoSegment))
-  		{
-  			return false;
-  		}
-  		GeoSegment convertedGs = (GeoSegment)gs;
-  		return _name == convertedGs._name 
-  				&& _point1 == convertedGs._point1 
-  				&& _point2 == convertedGs._point2;
+  		GeoSegment gs = (GeoSegment)obj;
+  		return _name == gs._name &&
+  				_point1 == gs._point1 &&
+  				_point2 == gs._point2;
   	}
 
 
@@ -149,11 +166,12 @@ public class GeoSegment {
   	 * Returns a hash code value for this.
      * @return a hash code value for this.
      **/
-  	public int hashCode() {
+  	public int hashCode() 
+  	{
     	// This implementation will work, but you may want to modify it 
     	// for improved performance. 
-  		// TODO this will cause clash between gp and reversed gp
-    	return _name.hashCode() ^ _point1.hashCode() ^ _point2.hashCode();
+    	return _name.hashCode() ^ _point1.hashCode() ^ 
+    			((_point2.hashCode() >> 16) | (_point2.hashCode() << 16));
   	}
 
 
@@ -161,7 +179,8 @@ public class GeoSegment {
   	 * Returns a string representation of this.
      * @return a string representation of this.
      **/
-  	public String toString() {
+  	public String toString()
+  	{
   		return "(" + _name + ", from: " + _point1+ ", to: " + _point2 + ")";
   	}
 

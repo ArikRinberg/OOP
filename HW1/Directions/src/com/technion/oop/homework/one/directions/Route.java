@@ -1,6 +1,9 @@
 package com.technion.oop.homework.one.directions;
 
+import java.awt.Frame;
+import java.awt.Taskbar.Feature;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * A Route is a path that traverses arbitrary GeoSegments, regardless
@@ -31,11 +34,15 @@ import java.util.Iterator;
  *   endingGeoSegment : GeoSegment  // last GeoSegment of the route
  * </pre>
  **/
-public class Route {
+public class Route 
+{
 
 	
  	// TODO Write abstraction function and representation invariant
-
+	private double _totalLength;
+	private LinkedList<GeoFeature> _geoFeatures;
+	private LinkedList<GeoSegment> _geoSegments;
+	
 
   	/**
   	 * Constructs a new Route.
@@ -46,17 +53,59 @@ public class Route {
      *          r.start = gs.p1 &&
      *          r.end = gs.p2
      **/
-  	public Route(GeoSegment gs) {
-  		// TODO Implement this constructor
+  	public Route(GeoSegment gs)
+  	{
+  		_totalLength = gs.getLength();
+  		_geoFeatures = new LinkedList<GeoFeature>();
+  		_geoFeatures.add(new GeoFeature(gs));
+  		_geoSegments = new LinkedList<GeoSegment>();
+  		_geoSegments.add(gs);
+  		
+  		checkRep();
   	}
 
+  	
+  	private void checkRep()
+  	{
+  		int len = 0;
+  		GeoPoint p = _geoFeatures.getFirst().getStart();
+  		for (GeoFeature feature : _geoFeatures) {
+			len += feature.getLength();
+			assert feature.getStart().equals(p) :
+				"features end point must be the same as next features start point";
+			p = feature.getEnd();
+		}
+  		assert len == _totalLength : "sum of geoFeatures lenght must be equal to totalLength";
+  		len = 0;
+  		p = _geoSegments.getFirst().getP1();
+  		for (GeoSegment segment : _geoSegments)
+  		{
+  			len += segment.getLength();
+  			assert segment.getP1().equals(p) :
+  				"segments end point must be the same as next segments start point";
+  			p = segment.getP2();
+  		}
+  		assert len == _totalLength : "sum of geoSegments lenght must be equal to totalLength";
+  		
+  		Iterator<GeoSegment> segmentItr = _geoSegments.iterator();
+  		for (GeoFeature feature : _geoFeatures) 
+  		{
+  			for (Iterator<GeoSegment> innerSegmentItr = feature.getGeoSegments(); innerSegmentItr.hasNext();)
+  			{
+  				assert innerSegmentItr.next() == segmentItr.next() :
+  					"geoSegments must be identical to all geoFeaturess geoSegments apended together";
+  				assert innerSegmentItr.hasNext() == segmentItr.hasNext();
+  			}		
+		}  		
+  	}
 
     /**
      * Returns location of the start of the route.
      * @return location of the start of the route.
      **/
-  	public GeoPoint getStart() {
-  		// TODO Implement this method
+  	public GeoPoint getStart()
+  	{
+  		return _geoSegments.getFirst().getP1();
   	}
 
 
@@ -64,8 +113,9 @@ public class Route {
   	 * Returns location of the end of the route.
      * @return location of the end of the route.
      **/
-  	public GeoPoint getEnd() {
-  		// TODO Implement this method
+  	public GeoPoint getEnd() 
+  	{
+  		return _geoSegments.getLast().getP2();
   	}
 
 
@@ -74,8 +124,9 @@ public class Route {
    	 * @return direction (in compass heading) of travel at the start of the
    	 *         route, in degrees.
    	 **/
-  	public double getStartHeading() {
-  		// TODO Implement this method
+  	public double getStartHeading() 
+  	{
+  		return _geoSegments.getFirst().getHeading();
   	}
 
 
@@ -84,8 +135,9 @@ public class Route {
      * @return direction (in compass heading) of travel at the end of the
      *         route, in degrees.
      **/
-  	public double getEndHeading() {
-  		// TODO Implement this method
+  	public double getEndHeading()
+  	{
+  		return _geoSegments.getLast().getHeading();
   	}
 
 
@@ -95,8 +147,9 @@ public class Route {
      *         as-the-crow-flies, but rather the total distance required to
      *         traverse the route. These values are not necessarily equal.
    	 **/
-  	public double getLength() {
-  		// TODO Implement this method
+  	public double getLength()
+  	{
+  		return _totalLength;
   	}
 
 
@@ -109,7 +162,8 @@ public class Route {
      *         r.endHeading = gs.heading &&
      *         r.length = this.length + gs.length
      **/
-  	public Route addSegment(GeoSegment gs) {
+  	public Route addSegment(GeoSegment gs) 
+  	{
   		// TODO Implement this method
   	}
 
@@ -132,8 +186,9 @@ public class Route {
      * where <code>a[n]</code> denotes the nth element of the Iterator.
      * @see homework1.GeoFeature
      **/
-  	public Iterator<GeoFeature> getGeoFeatures() {
-  		// TODO Implement this method
+  	public Iterator<GeoFeature> getGeoFeatures() 
+  	{
+  		return _geoFeatures.iterator();
   	}
 
 
@@ -151,8 +206,9 @@ public class Route {
      * where <code>a[n]</code> denotes the nth element of the Iterator.
      * @see homework1.GeoSegment
      **/
-  	public Iterator<GeoSegment> getGeoSegments() {
-  		// TODO Implement this method
+  	public Iterator<GeoSegment> getGeoSegments()
+  	{
+  		return _geoSegments.iterator();
   	}
 
 
@@ -162,8 +218,17 @@ public class Route {
      *         (o.geoFeatures and this.geoFeatures contain
      *          the same elements in the same order).
      **/
-  	public boolean equals(Object o) {
-  		// TODO Implement this method
+  	public boolean equals(Object o)
+  	{
+  		if (o == null || !(o instanceof Route))
+  		{
+  			return false;
+  		}
+  		Route gf = (Route)o;
+
+  		return _totalLength == gf._totalLength &&
+  				_geoFeatures.equals(gf._geoFeatures) &&
+  				_geoSegments.equals(gf._geoSegments);
   	}
 
 
@@ -171,11 +236,20 @@ public class Route {
      * Returns a hash code for this.
      * @return a hash code for this.
      **/
-  	public int hashCode() {
-    	// This implementation will work, but you may want to modify it
-    	// for improved performance.
-
-    	return 1;
+  	public int hashCode()
+  	{
+  		final int S = Integer.SIZE;
+  		int bits, i = 0;
+    	int hash = (int)(_totalLength * 1000);
+   
+    	for (GeoFeature features : _geoFeatures)
+    	{
+			bits = features.hashCode() + i;
+			// XOR after cyclic bit shift
+			hash ^= (bits >>> i%S) | (bits << (S - i%S)); 
+			i ++;
+		}
+    	return hash;
   	}
 
 
@@ -183,7 +257,15 @@ public class Route {
      * Returns a string representation of this.
      * @return a string representation of this.
      **/
-  	public String toString() {
+  	public String toString()
+  	{
+  		StringBuffer sb = new StringBuffer();
+  		sb.append("route:\n");
+  		for (GeoFeature feature : _geoFeatures)
+  		{
+			sb.append(feature.toString());
+		}
+  		sb.append("routes total leangth is: " + _totalLength + "\n");
+  		return new String(sb);
   	}
-
 }
