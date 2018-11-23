@@ -1,13 +1,14 @@
 package com.technion.oop.homework.one.directions;
 
+import java.util.Iterator;
 
 /**
  * A RouteFormatter class knows how to create a textual description of
  * directions from one location to another. The class is abstract to
  * support different textual descriptions.
  */
-public abstract class RouteFormatter {
-
+public abstract class RouteFormatter
+{
   	/**
      * Give directions for following this Route, starting at its start point
      * and facing in the specified heading.
@@ -18,13 +19,17 @@ public abstract class RouteFormatter {
      * @return A newline-terminated directions <tt>String</tt> giving
      * 	       human-readable directions from start to end along this route.
      **/
-  	public String computeDirections(Route route, double heading) {
-  		// Implementation hint:
-		// This method should call computeLine() for each geographic
-		// feature in this route and concatenate the results into a single
-		// String.
-  		
-  		// TODO Implement this method
+  	public String computeDirections(Route route, double origHeading) 
+  	{
+  		String directions = "start:\n"; //TODO: arik, do you think the needs to be a "new" in here?
+  		double heading = origHeading;
+  		for(Iterator<GeoFeature> iter = route.getGeoFeatures();	iter.hasNext();)
+  		{
+  			GeoFeature curr = iter.next();
+  			directions += computeLine(curr, heading) + "\n";
+  			heading = curr.getEndHeading();
+  		}
+  		return directions;
   	}
 
 
@@ -60,8 +65,28 @@ public abstract class RouteFormatter {
      * </pre>
      * and likewise for left turns.
      */
-  	protected String getTurnString(double origHeading, double newHeading) {
-  		// TODO Implement this method
+  	protected String getTurnString(double origHeading, double newHeading)
+  	{
+  		double a = newHeading - origHeading;
+  		String side = (Math.abs(a) < 180) ? ((a > 0) ? "right" : "left") : ((a > 0) ? "left" : "right");
+  		a = Math.abs(a);
+  		if(a < 10)
+  		{
+  			return "Continue";
+  		}
+  		else if(a < 60)
+  		{
+  			return "Turn slight " + side;
+  		}
+  		else if(a < 120)
+  		{
+  			return "Turn " + side;
+  		}
+  		else if(a < 179)
+  		{
+  			return "Turn sharp " + side;
+  		}
+  		return "U-turn";
   	}
 
 }
