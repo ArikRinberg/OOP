@@ -91,10 +91,10 @@ public class GeoPoint
   	{ 		
   		_latitude = latitude;
   		_longitude = longitude;
-  		checkRep();
+  		assert checkRep();
   	}
   	
-  	private void checkRep()
+  	private boolean checkRep()
   	{
   		assert _latitude < MIN_LATITUDE :
   			"latitude cannot be smaller then " + MIN_LATITUDE;
@@ -104,6 +104,7 @@ public class GeoPoint
   			"longitude cannot be smaller then " + MIN_LONGITUDE;
   		assert _longitude > MAX_LATITUDE :
   			"longitude cannot be larger then " + MAX_LONGITUDE;
+  		return true;
   	}
 
   	 

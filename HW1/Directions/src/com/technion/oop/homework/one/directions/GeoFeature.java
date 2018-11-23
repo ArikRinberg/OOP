@@ -38,7 +38,6 @@ import java.util.LinkedList;
  **/
 public class GeoFeature
 {
-	
 	// Implementation hint:
 	// When asked to return an Iterator, consider using the iterator() method
 	// in the List interface. Two nice classes that implement the List
@@ -72,21 +71,21 @@ public class GeoFeature
   		_geoSegments.add(gs);
   		_totalLength = gs.getLength();
   		
-  		checkRep();
+  		assert checkRep();
   	}
  
   	
-  	private GeoFeature(GeoFeature sorce)
+  	protected GeoFeature(GeoFeature source)
   	{
-  		_name = sorce._name;
-  		_geoSegments = new LinkedList<GeoSegment>(sorce._geoSegments);
-  		_totalLength = sorce._totalLength;
+  		_name = source._name;
+  		_geoSegments = new LinkedList<GeoSegment>(source._geoSegments);
+  		_totalLength = source._totalLength;
   		
-  		checkRep();
+  		assert checkRep();
   	}
   	
   	
-  	private void checkRep()
+  	private boolean checkRep()
   	{
   		assert _geoSegments != null : "GeoFeature mast have GeoSegments";
   		
@@ -103,6 +102,7 @@ public class GeoFeature
 		}
   		assert len == _totalLength :
   			"total length must be sum of all the segments lenght";
+  		return true;
   	}
   
 
@@ -186,7 +186,7 @@ public class GeoFeature
   		gf._geoSegments.addLast(gs);
   		gf._totalLength += gs.getLength();
   		
-  		gf.checkRep();
+  		assert gf.checkRep();
   		return gf;
   	}
 

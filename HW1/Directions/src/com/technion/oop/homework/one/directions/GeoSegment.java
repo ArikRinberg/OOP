@@ -67,14 +67,15 @@ public class GeoSegment
   		_heading = _point1.headingTo(_point2);
   		_lengh = _point1.distanceTo(_point2);
   		
-  		checkRep();
+  		assert checkRep();
   	}
   	
-  	private void checkRep()
+  	private boolean checkRep()
   	{
   		assert !_name.isEmpty() : "GeoSegment must have a name";
   		assert _heading == _point1.headingTo(_point2);
   		assert _lengh == _point1.distanceTo(_point2);
+  		return true;
   	}
 
 

@@ -36,7 +36,6 @@ import java.util.LinkedList;
  **/
 public class Route 
 {
-
 	
  	// TODO Write abstraction function and representation invariant
 	private double _totalLength;
@@ -61,11 +60,23 @@ public class Route
   		_geoSegments = new LinkedList<GeoSegment>();
   		_geoSegments.add(gs);
   		
-  		checkRep();
+  		assert checkRep();
+  	}
+  	
+  	protected Route(Route source)
+  	{
+  		_totalLength = source._totalLength;
+  		_geoFeatures = new LinkedList<GeoFeature>();
+  		for (GeoFeature feature : _geoFeatures) 
+  		{
+  			_geoFeatures.addLast(new GeoFeature(feature));
+		}
+  		_geoSegments = new LinkedList<GeoSegment>(source._geoSegments);
+  		assert checkRep();
   	}
 
   	
-  	private void checkRep()
+  	private boolean checkRep()
   	{
   		int len = 0;
   		GeoPoint p = _geoFeatures.getFirst().getStart();
@@ -96,7 +107,8 @@ public class Route
   					"geoSegments must be identical to all geoFeaturess geoSegments apended together";
   				assert innerSegmentItr.hasNext() == segmentItr.hasNext();
   			}		
-		}  		
+		}  	
+  		return true;
   	}
 
     /**
@@ -164,7 +176,22 @@ public class Route
      **/
   	public Route addSegment(GeoSegment gs) 
   	{
-  		// TODO Implement this method
+  		Route r = new Route(this);
+  		r._totalLength += gs.getLength();
+  		r._geoSegments.addLast(gs);
+  		// if the new segment has the same name as last segment - add it to last gerFeature
+  		if (gs.getName().equals(r._geoSegments.getLast().getName()))
+  		{
+  			GeoFeature temp = r._geoFeatures.getLast().addSegment(gs);
+  			r._geoFeatures.removeLast();
+  			r._geoFeatures.addLast(temp);
+  		}
+  		else // create new geoFeature in the end
+  		{
+  			r._geoFeatures.addLast(new GeoFeature(gs));
+  		}
+  		assert r.checkRep();
+  		return r;
   	}
 
 
