@@ -21,7 +21,7 @@ public abstract class RouteFormatter
      **/
   	public String computeDirections(Route route, double origHeading) 
   	{
-  		String directions = "start:\n"; //TODO: arik, do you think the needs to be a "new" in here?
+  		String directions = ""; //TODO: arik, do you think the needs to be a "new" in here?
   		double heading = origHeading;
   		for(Iterator<GeoFeature> iter = route.getGeoFeatures();	iter.hasNext();)
   		{

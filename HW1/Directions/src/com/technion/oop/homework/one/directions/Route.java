@@ -67,7 +67,7 @@ public class Route
   	{
   		_totalLength = source._totalLength;
   		_geoFeatures = new LinkedList<GeoFeature>();
-  		for (GeoFeature feature : _geoFeatures) 
+  		for (GeoFeature feature : source._geoFeatures) 
   		{
   			_geoFeatures.addLast(new GeoFeature(feature));
 		}
@@ -178,7 +178,6 @@ public class Route
   	{
   		Route r = new Route(this);
   		r._totalLength += gs.getLength();
-  		r._geoSegments.addLast(gs);
   		// if the new segment has the same name as last segment - add it to last gerFeature
   		if (gs.getName().equals(r._geoSegments.getLast().getName()))
   		{
@@ -190,6 +189,7 @@ public class Route
   		{
   			r._geoFeatures.addLast(new GeoFeature(gs));
   		}
+  		r._geoSegments.addLast(gs);
   		assert r.checkRep();
   		return r;
   	}

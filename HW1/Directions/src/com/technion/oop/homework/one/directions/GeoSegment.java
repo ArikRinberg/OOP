@@ -157,9 +157,9 @@ public class GeoSegment
   		}
   		
   		GeoSegment gs = (GeoSegment)obj;
-  		return _name == gs._name &&
-  				_point1 == gs._point1 &&
-  				_point2 == gs._point2;
+  		return _name.equals(gs._name) &&
+  				_point1.equals(gs._point1) &&
+  				_point2.equals(gs._point2);
   	}
 
 

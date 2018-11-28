@@ -162,10 +162,19 @@ public class GeoPoint
 		 // degrees and degrees increase in the clockwise direction. By
 		 // mathematical convention, "east" is 0 degrees, and degrees
 		 // increase in the counterclockwise direction. 
-		 
+		
   		double latitudeDistance = GetLatitudeDistanceInKM(this, gp);
+  		if ((gp._latitude - this._latitude) < 0)
+  		{
+  			latitudeDistance *= -1;
+  		}
+  		
   		double longitudeDistance = GetLongitudeDistanceInKM(this, gp);
-  			
+  		if ((gp._longitude - this._longitude) < 0)
+  		{
+  			longitudeDistance *= -1;
+  		}
+  		
   		// Calculate theta in radians moving 0 degrees to north, and multiple by -1 to
   		//  reverse counterclockwise spin
   		double thetaInRadians = (Math.atan2(latitudeDistance, longitudeDistance) - Math.PI/2) * -1;
