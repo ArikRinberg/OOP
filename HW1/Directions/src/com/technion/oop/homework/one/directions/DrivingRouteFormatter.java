@@ -49,7 +49,8 @@ public class DrivingRouteFormatter extends RouteFormatter {
      * newline and should include no extra spaces other than those shown
      * above.
      **/
-  	public String computeLine(GeoFeature geoFeature, double origHeading) {
+  	public String computeLine(GeoFeature geoFeature, double origHeading)
+  	{
   		
   		// Implementation hint:
 		// You may find the class java.text.DecimalFormat useful when
@@ -59,6 +60,18 @@ public class DrivingRouteFormatter extends RouteFormatter {
   		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
 		   		
   		// TODO Implement this method
+  		//Turn left onto Hagalil and go 1.4 kilometers.
+  		String turnStr = getTurnString(origHeading, geoFeature.getStartHeading());
+  		String nameStr = geoFeature.getName();
+  		String distanceSTR = GetDrivingDistance(geoFeature.getLength());
+
+  		return turnStr + " onto " + nameStr + " and go " + distanceSTR + ".\n";
+  	}
+  	
+  	private String GetDrivingDistance(double distance)
+  	{
+  		DecimalFormat df = new DecimalFormat("#.#");
+  		return df.format(distance) + " kilometers";
   	}
 
 }

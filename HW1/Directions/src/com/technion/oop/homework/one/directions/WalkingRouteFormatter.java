@@ -1,6 +1,6 @@
 package com.technion.oop.homework.one.directions;
 
-import java.text.DecimalFormat;
+//import java.text.DecimalFormat;
 
 /**
  * A WalkingDirections class knows how to create a textual description of
@@ -24,8 +24,12 @@ import java.text.DecimalFormat;
  * be reported to the nearest minute. Each line should be terminated by a
  * newline and should include no extra spaces other than those shown above.
  **/
-public class WalkingRouteFormatter extends RouteFormatter {
+public class WalkingRouteFormatter extends RouteFormatter 
+{
 
+	/** walking speed in minutes per kilometer. **/
+	private static final int WALKING_SPEED  =  20;
+	
   	/**
      * Computes a single line of a multi-line directions String that
      * represents the instructions for walking along a single geographic
@@ -51,15 +55,25 @@ public class WalkingRouteFormatter extends RouteFormatter {
      * newline and should include no extra spaces other than those shown
      * above.
      **/
-  	public String computeLine(GeoFeature geoFeature, double origHeading) {
-  		
+  	public String computeLine(GeoFeature geoFeature, double origHeading)
+  	{	
 		// Implementation hint:
 		// You may find the class java.text.DecimalFormat useful when
 		// implementing this method. More info can be found at:
 		// http://docs.oracle.com/javase/tutorial/java/data/numberformat.html
 		// and at:
 		// http://docs.oracle.com/javase/8/docs/api/java/text/DecimalFormat.html
-					 
-  		// TODO Implement this method
+
+  		String turnStr = getTurnString(origHeading, geoFeature.getStartHeading());
+  		String nameStr = geoFeature.getName();
+  		String timeSTR = GetWalkingTime(geoFeature.getLength());
+
+  		return turnStr + " onto " + nameStr + " and walk for " + timeSTR + ".\n";
+  	}
+  	
+  	private String GetWalkingTime(double distance)
+  	{
+  		long walkingTime = Math.round(distance * WALKING_SPEED);
+  		return walkingTime + " minutes";
   	}
 }
