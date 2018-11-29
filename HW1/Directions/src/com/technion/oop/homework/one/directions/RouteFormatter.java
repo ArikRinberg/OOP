@@ -26,7 +26,7 @@ public abstract class RouteFormatter
   		for(Iterator<GeoFeature> iter = route.getGeoFeatures();	iter.hasNext();)
   		{
   			GeoFeature curr = iter.next();
-  			directions += computeLine(curr, heading) + "\n";
+  			directions += computeLine(curr, heading);
   			heading = curr.getEndHeading();
   		}
   		return directions;
@@ -70,6 +70,11 @@ public abstract class RouteFormatter
   		double a = newHeading - origHeading;
   		String side = (Math.abs(a) < 180) ? ((a > 0) ? "right" : "left") : ((a > 0) ? "left" : "right");
   		a = Math.abs(a);
+  		if (a > 180)
+  		{
+  			a -= 180;
+  		}
+  		
   		if(a < 10)
   		{
   			return "Continue";

@@ -1,7 +1,7 @@
 package com.technion.oop.homework.one.directions;
 
 import java.awt.Frame;
-import java.awt.Taskbar.Feature;
+//import java.awt.Taskbar.Feature;
 import java.util.Iterator;
 import java.util.LinkedList;
 
