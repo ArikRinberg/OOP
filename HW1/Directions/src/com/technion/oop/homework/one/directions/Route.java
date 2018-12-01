@@ -36,6 +36,8 @@ import java.util.LinkedList;
  **/
 public class Route 
 {
+	//TODO:
+		// Note 5 on the pdf. There is still a bug
 	
  	// TODO Write abstraction function and representation invariant
 	private double _totalLength;

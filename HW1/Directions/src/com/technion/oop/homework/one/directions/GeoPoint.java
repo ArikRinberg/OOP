@@ -233,8 +233,8 @@ public class GeoPoint
   		int latitudeMillionthDegrees = _longitude % 1000000;
   		int longitudeDegrees = _longitude / 1000000;
   		int longitudeMillionthDegrees = _longitude % 1000000;
-  		return "latitude : " + latitudeDegrees + "." + latitudeMillionthDegrees + 
-  				", longitude : " + longitudeDegrees + "." + longitudeMillionthDegrees;
+  		return "(" + latitudeDegrees + "." + latitudeMillionthDegrees + 
+  				"," + longitudeDegrees + "." + longitudeMillionthDegrees + ")";
   	}
 
   	private static double GetLatitudeDistanceInKM(GeoPoint a, GeoPoint b)

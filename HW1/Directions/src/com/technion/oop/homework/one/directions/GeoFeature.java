@@ -38,6 +38,9 @@ import java.util.LinkedList;
  **/
 public class GeoFeature
 {
+	//TODO:
+	// Note 5 on the pdf
+	
 	// Implementation hint:
 	// When asked to return an Iterator, consider using the iterator() method
 	// in the List interface. Two nice classes that implement the List
@@ -46,8 +49,22 @@ public class GeoFeature
 	// info can be found at:
 	//   http://docs.oracle.com/javase/8/docs/api/java/util/List.html
 	
+  	// Abstraction Function:
+  	// A GeoFeature F is NaN if:
+  	// 1. name = null
+  	// 2. A segment in geoSegments is NaN
+	// 3. Two segments in geoSegments have a different name
+	// Otherwise F represents a feature which is build of different
+	//  segments all with the same name, where for every consecutive segments
+	//  s1 and s2 (s2 is after s1), s1.end = s2.start
+  	
+  	// Representation invariant for every GeoFeature F:
+	// 1. name != null 
+	// 2. all segments in geoSegments aren't NaN
+  	// 3. all segments in geoSegments have the same name
+	// 4. all consecutive segments s1 and s2 in geoSegments maintain that
+	//     s1.end = s2.start
 	
-  	// TODO Write abstraction function and representation invariant
 	private String _name;
 	private double _totalLength;
 	private LinkedList<GeoSegment> _geoSegments;

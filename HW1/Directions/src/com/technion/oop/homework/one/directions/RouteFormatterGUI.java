@@ -142,13 +142,34 @@ public class RouteFormatterGUI extends JPanel {
 	 * 			RouteDirection.computeDirections(this.route,0)
 	 */
 	public void addSegment(GeoSegment segment) {
+		if (route == null)
+		{
+			route = new Route(segment);
+		}
+		else
+		{
+			route.addSegment(segment);
+		}
 		DefaultListModel<GeoSegment> model =
 				(DefaultListModel<GeoSegment>)(this.lstSegments.getModel());
+		model.addElement(segment);
 		
-		// TODO Write the body of this method
+		WalkingRouteFormatter walkingDirections = new WalkingRouteFormatter();
+		txtWalkingDirections.setText(walkingDirections.computeDirections(route, 0));
+		
+		DrivingRouteFormatter drivingDirections = new DrivingRouteFormatter();
+		txtDrivingDirections.setText(drivingDirections.computeDirections(route, 0));
 	}
-
-
+	
+	public GeoPoint getRouteEnd()
+	{
+		if (route == null)
+		{
+			return null;
+		}
+		return route.getEnd();
+	}
+	
     public static void main(String[] args) {
 		JFrame frame = new JFrame("Route Formatter GUI");
 		Container contentPane = frame.getContentPane();

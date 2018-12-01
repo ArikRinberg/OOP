@@ -42,10 +42,20 @@ import java.awt.event.PaintEvent;
  * </pre>
  **/
 public class GeoSegment 
-{
-
+{	
+  	// Abstraction Function:
+  	// A GeoPoint p is NaN if:
+  	// 1. name = null
+  	// 2. p1 = null or p1 is NaN
+	// 3. p2 = null or p2 is NaN
+	// Otherwise represents a segment starting at p1 ending at p2 and
+	//  which is called name
+  	
+  	// Representation invariant for every GeoSegment S:
+	// 1. name != null
+  	// 1. p1 != null
+  	// 2. p2 != null
 	
-  	// TODO Write abstraction function and representation invariant
 	
 	private String _name;
 	private GeoPoint _point1;
@@ -60,7 +70,6 @@ public class GeoSegment
      **/
   	public GeoSegment(String name, GeoPoint p1, GeoPoint p2) 
   	{
-  		// TODO Implement this method
   		_name = name;
   		_point1 = p1;
   		_point2 = p2;
@@ -182,7 +191,7 @@ public class GeoSegment
      **/
   	public String toString()
   	{
-  		return "(" + _name + ", from: " + _point1+ ", to: " + _point2 + ")";
+  		return "(\"" + _name + "\"," + _point1+ "," + _point2 + ")";
   	}
 
 }
