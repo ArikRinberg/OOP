@@ -148,6 +148,10 @@ public class GeoSegment
      **/
   	public double getHeading() 
   	{
+  		if(_lengh == 0)
+  		{
+  			return 0;
+  		}
   		return _heading;
   	}
 

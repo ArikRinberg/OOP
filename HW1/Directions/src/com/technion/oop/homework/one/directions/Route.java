@@ -182,7 +182,7 @@ public class Route
   	/**
      * Creates a new route that is equal to this route with gs appended to
      * its end.
-   	 * @requires gs != null && gs.p1 == this.end
+   	 * @requires gs != null && (gs.p1 == this.end || gs.p2 == this.end)
      * @return a new Route r such that
      *         r.end = gs.p2 &&
      *         r.endHeading = gs.heading &&
@@ -190,7 +190,11 @@ public class Route
      **/
   	public Route addSegment(GeoSegment gs) 
   	{
-  		return new Route(this, gs);
+  		if(getEnd().equals(gs.getP1()))
+  		{
+  			return new Route(this, gs);
+  		}
+  		return new Route(this, gs.reverse());
   	}
 
 
