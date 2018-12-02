@@ -26,7 +26,8 @@ import javax.swing.JOptionPane;
  * <p>
  * A figure showing this GUI can be found in homework assignment #1.
  */
-public class GeoSegmentsDialog extends JDialog {
+public class GeoSegmentsDialog extends JDialog 
+{
 
 	private static final long serialVersionUID = 1L;
 
@@ -41,7 +42,8 @@ public class GeoSegmentsDialog extends JDialog {
 	 * @effects Creates a new GeoSegmentsDialog JDialog with owner-frame
 	 * 			owner and parent pnlParent
 	 */
-	public GeoSegmentsDialog(Frame owner, RouteFormatterGUI pnlParent) {
+	public GeoSegmentsDialog(Frame owner, RouteFormatterGUI pnlParent) 
+	{
 		// create a modal JDialog with the an owner Frame (a modal window
 		// in one that doesn't allow other windows to be active at the
 		// same time).
@@ -83,8 +85,10 @@ public class GeoSegmentsDialog extends JDialog {
 		});
 				
 		JButton btnCancel= new JButton("Cancel");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		btnCancel.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
 				hideDiag();
 			}
 		});
@@ -128,8 +132,6 @@ public class GeoSegmentsDialog extends JDialog {
 		c.anchor = GridBagConstraints.SOUTHEAST;
 		gridbag.setConstraints(btnCancel, c);
 		this.add(btnCancel);
-		
-		// TODO Write the body of this method
 	}
 	
 	private void hideDiag()
@@ -152,4 +154,4 @@ public class GeoSegmentsDialog extends JDialog {
 			model.addElement(segment);
 		}
 	}
-}
+}	

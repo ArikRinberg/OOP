@@ -29,7 +29,8 @@ public class RouteFormatterGUI extends JPanel {
 	 * Creates a new RoutFormatterGUI JPanel.
 	 * @effects Creates a new RoutFormatterGUI JPanel contained in frame.
 	 */
-	public RouteFormatterGUI(JFrame frame) {
+	public RouteFormatterGUI(JFrame frame) 
+	{
 		// create a GeoSegmentsDialog (secondary window)
 		dlgSegments = new GeoSegmentsDialog(frame, this);
 		dlgSegments.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
@@ -141,14 +142,15 @@ public class RouteFormatterGUI extends JPanel {
 	 * 			with the return value of
 	 * 			RouteDirection.computeDirections(this.route,0)
 	 */
-	public void addSegment(GeoSegment segment) {
+	public void addSegment(GeoSegment segment) 
+	{
 		if (route == null)
 		{
 			route = new Route(segment);
 		}
 		else
 		{
-			route.addSegment(segment);
+			route = route.addSegment(segment);
 		}
 		DefaultListModel<GeoSegment> model =
 				(DefaultListModel<GeoSegment>)(this.lstSegments.getModel());

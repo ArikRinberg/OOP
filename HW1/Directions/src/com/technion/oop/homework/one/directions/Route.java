@@ -40,9 +40,9 @@ public class Route
 		// Note 5 on the pdf. There is still a bug
 	
  	// TODO Write abstraction function and representation invariant
-	private double _totalLength;
-	private LinkedList<GeoFeature> _geoFeatures;
-	private LinkedList<GeoSegment> _geoSegments;
+	final private double _totalLength;
+	final private LinkedList<GeoFeature> _geoFeatures;
+	final private LinkedList<GeoSegment> _geoSegments;
 	
 
   	/**
@@ -65,15 +65,27 @@ public class Route
   		assert checkRep();
   	}
   	
-  	protected Route(Route source)
+  	protected Route(Route source, GeoSegment gs)
   	{
-  		_totalLength = source._totalLength;
+  		_totalLength = source._totalLength + gs.getLength();
   		_geoFeatures = new LinkedList<GeoFeature>();
   		for (GeoFeature feature : source._geoFeatures) 
   		{
   			_geoFeatures.addLast(new GeoFeature(feature));
 		}
   		_geoSegments = new LinkedList<GeoSegment>(source._geoSegments);
+  		// if the new segment has the same name as last segment - add it to last gerFeature
+  		if (gs.getName().equals(_geoSegments.getLast().getName()))
+  		{
+  			GeoFeature temp = _geoFeatures.getLast().addSegment(gs);
+  			_geoFeatures.removeLast();
+  			_geoFeatures.addLast(temp);
+  		}
+  		else // create new geoFeature in the end
+  		{
+  			_geoFeatures.addLast(new GeoFeature(gs));
+  		}
+  		_geoSegments.addLast(gs);
   		assert checkRep();
   	}
 
@@ -178,22 +190,7 @@ public class Route
      **/
   	public Route addSegment(GeoSegment gs) 
   	{
-  		Route r = new Route(this);
-  		r._totalLength += gs.getLength();
-  		// if the new segment has the same name as last segment - add it to last gerFeature
-  		if (gs.getName().equals(r._geoSegments.getLast().getName()))
-  		{
-  			GeoFeature temp = r._geoFeatures.getLast().addSegment(gs);
-  			r._geoFeatures.removeLast();
-  			r._geoFeatures.addLast(temp);
-  		}
-  		else // create new geoFeature in the end
-  		{
-  			r._geoFeatures.addLast(new GeoFeature(gs));
-  		}
-  		r._geoSegments.addLast(gs);
-  		assert r.checkRep();
-  		return r;
+  		return new Route(this, gs);
   	}
 
 

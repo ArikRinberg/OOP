@@ -65,9 +65,9 @@ public class GeoFeature
 	// 4. all consecutive segments s1 and s2 in geoSegments maintain that
 	//     s1.end = s2.start
 	
-	private String _name;
-	private double _totalLength;
-	private LinkedList<GeoSegment> _geoSegments;
+	final private String _name;
+	final private double _totalLength;
+	final private LinkedList<GeoSegment> _geoSegments;
 
 	/**
      * Constructs a new GeoFeature.
@@ -92,11 +92,22 @@ public class GeoFeature
   	}
  
   	
+  	protected GeoFeature(GeoFeature source, GeoSegment gs)
+  	{
+  		_name = source._name;
+  		_totalLength = source._totalLength + gs.getLength();
+  		_geoSegments = new LinkedList<GeoSegment>(source._geoSegments);
+  		_geoSegments.addLast(gs);
+  		
+  		assert checkRep();
+  	}
+  
+  	
   	protected GeoFeature(GeoFeature source)
   	{
   		_name = source._name;
-  		_geoSegments = new LinkedList<GeoSegment>(source._geoSegments);
   		_totalLength = source._totalLength;
+  		_geoSegments = new LinkedList<GeoSegment>(source._geoSegments);
   		
   		assert checkRep();
   	}
@@ -199,12 +210,7 @@ public class GeoFeature
      **/
   	public GeoFeature addSegment(GeoSegment gs) 
   	{
-  		GeoFeature gf = new GeoFeature(this);
-  		gf._geoSegments.addLast(gs);
-  		gf._totalLength += gs.getLength();
-  		
-  		assert gf.checkRep();
-  		return gf;
+  		return new GeoFeature(this, gs); 		
   	}
 
 

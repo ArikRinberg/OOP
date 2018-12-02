@@ -228,7 +228,8 @@ public class GeoPoint
      * Returns a string representation of this GeoPoint.
      * @return a string representation of this GeoPoint.
      **/
-  	public String toString() {
+  	public String toString() 
+  	{
   		int latitudeDegrees = _latitude / 1000000;
   		int latitudeMillionthDegrees = _longitude % 1000000;
   		int longitudeDegrees = _longitude / 1000000;
