@@ -29,11 +29,7 @@ package com.technion.oop.homework.one.directions;
  * </pre>
  **/
 public class GeoPoint
-{
-	
-	private int _latitude;
-	private int _longitude;
-	
+{	
 	/** Minimum value the latitude field can have in this class. **/
 	public static final int MIN_LATITUDE  =  -90 * 1000000;
 	    
@@ -73,6 +69,9 @@ public class GeoPoint
   	// 1. latitude isn't within the range [MIN_LATITUDE,MAX_LATITUDE]
   	// 2. longitude isn't within the range [MIN_LONGITUDE,MAX_LONGITUDE]
   	// Otherwise is a point (latitude, longitude) in millionths of a degree
+  	
+  	private final int _latitude;
+	private final int _longitude;
   	
   	// Representation invariant for every GeoPoint p:
   	// 1. MIN_LATITUDE <= latitude <= MAX_LATITUDE

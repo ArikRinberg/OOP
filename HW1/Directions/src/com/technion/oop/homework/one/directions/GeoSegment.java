@@ -61,7 +61,7 @@ public class GeoSegment
 	private GeoPoint _point1;
 	private GeoPoint _point2;
 	private double _heading;
-	private double _lengh;
+	private double _length;
 	
   	/**
      * Constructs a new GeoSegment with the specified name and endpoints.
@@ -74,7 +74,7 @@ public class GeoSegment
   		_point1 = p1;
   		_point2 = p2;
   		_heading = _point1.headingTo(_point2);
-  		_lengh = _point1.distanceTo(_point2);
+  		_length = _point1.distanceTo(_point2);
   		
   		assert checkRep();
   	}
@@ -83,7 +83,7 @@ public class GeoSegment
   	{
   		assert !_name.isEmpty() : "GeoSegment must have a name";
   		assert _heading == _point1.headingTo(_point2);
-  		assert _lengh == _point1.distanceTo(_point2);
+  		assert _length == _point1.distanceTo(_point2);
   		return true;
   	}
 
@@ -136,19 +136,19 @@ public class GeoSegment
      */
   	public double getLength()
   	{
-  		return _lengh;
+  		return _length;
   	}
 
 
   	/**
   	 * Returns the compass heading from p1 to p2.
-     * @requires this.length != 0
-     * @return the compass heading from p1 to p2, in degrees, using the
+     * @return if this.length == 0 returns 0, 
+     *         else returns the compass heading from p1 to p2, in degrees, using the
      *         flat-surface, near the Technion approximation.
      **/
   	public double getHeading() 
   	{
-  		if(_lengh == 0)
+  		if(_length == 0)
   		{
   			return 0;
   		}
@@ -163,7 +163,6 @@ public class GeoSegment
    	 **/
   	public boolean equals(Object obj)
   	{
-  		// TODO Implement this method
   		if (obj == null || !(obj instanceof GeoSegment))
   		{
   			return false;
