@@ -36,10 +36,22 @@ import java.util.LinkedList;
  **/
 public class Route 
 {
-	//TODO:
-		// Note 5 on the pdf. There is still a bug
+  	// Abstraction Function:
+  	// A Route R is NaN if:
+	// 1. A feature in geoFeatures is NaN
+	// 2. A segment in geoSegments is NaN
+	// Otherwise R represents a route which is built of different
+	//  segments, where for every consecutive segments
+	//  s1 and s2 (s2 is after s1), s1.end = s2.start
+	// We then take this list of segments, and split it
+	//  into features by the name of the segments.
+  	
+  	// Representation invariant for every Route R:
+	// 1. all segments in geoSegments aren't NaN
+  	// 2. all segments in geoFeatures aren't NaN
+	// 3. all consecutive segments s1 and s2 in geoSegments maintain that
+	//     s1.end = s2.start
 	
- 	// TODO Write abstraction function and representation invariant
 	final private double _totalLength;
 	final private LinkedList<GeoFeature> _geoFeatures;
 	final private LinkedList<GeoSegment> _geoSegments;
@@ -182,7 +194,7 @@ public class Route
   	/**
      * Creates a new route that is equal to this route with gs appended to
      * its end.
-   	 * @requires gs != null && (gs.p1 == this.end || gs.p2 == this.end)
+   	 * @requires gs != null && (gs.p1 == this.end)
      * @return a new Route r such that
      *         r.end = gs.p2 &&
      *         r.endHeading = gs.heading &&
@@ -190,11 +202,7 @@ public class Route
      **/
   	public Route addSegment(GeoSegment gs) 
   	{
-  		if(getEnd().equals(gs.getP1()))
-  		{
-  			return new Route(this, gs);
-  		}
-  		return new Route(this, gs.reverse());
+  		return new Route(this, gs);
   	}
 
 
@@ -295,7 +303,7 @@ public class Route
   		{
 			sb.append(feature.toString());
 		}
-  		sb.append("routes total leangth is: " + _totalLength + "\n");
+  		sb.append("The routes total length is: " + _totalLength + "\n");
   		return new String(sb);
   	}
 }

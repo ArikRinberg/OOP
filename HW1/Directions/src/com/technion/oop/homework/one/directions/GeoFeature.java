@@ -54,7 +54,7 @@ public class GeoFeature
   	// 1. name = null
   	// 2. A segment in geoSegments is NaN
 	// 3. Two segments in geoSegments have a different name
-	// Otherwise F represents a feature which is build of different
+	// Otherwise F represents a feature which is built of different
 	//  segments all with the same name, where for every consecutive segments
 	//  s1 and s2 (s2 is after s1), s1.end = s2.start
   	
