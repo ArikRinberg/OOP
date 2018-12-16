@@ -92,7 +92,7 @@ public class WeightedNode implements Comparable<WeightedNode> {
 	 * @return a hash code value for this.
 	 */
   	public int hashCode() {
-    	return toString().hashCode();
+    	return name.hashCode();
   	}
 
 
