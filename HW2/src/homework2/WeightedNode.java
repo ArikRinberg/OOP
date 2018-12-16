@@ -68,7 +68,7 @@ public class WeightedNode implements Comparable<WeightedNode> {
 	 * @modifies this
 	 * @effects the color of the object
      */	
-	public void getColor(String color){
+	public void setColor(String color){
 		this.color = color;
 	}
 	

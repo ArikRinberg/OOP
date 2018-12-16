@@ -41,6 +41,7 @@ public class WeightedNodesGraph implements Graph<WeightedNode> {
 	public WeightedNodesGraph()
 	{
 		_weightedGraph = new HashMap<WeightedNode, HashSet<WeightedNode>>();
+		checkRep();
 	}
 	
 	@Override
@@ -49,7 +50,7 @@ public class WeightedNodesGraph implements Graph<WeightedNode> {
 		if(_weightedGraph.containsKey(node)) throw new GraphNodeException();
 		if(node.getCost() < 0) throw new GraphNodeException();
 		_weightedGraph.put(node, new HashSet<WeightedNode>());
-		
+		checkRep();
 	}
 
 	@Override
@@ -71,6 +72,7 @@ public class WeightedNodesGraph implements Graph<WeightedNode> {
 			throw new GraphEdgeException();
 		}
 		childrenOfStart.add(end);
+		checkRep();
 	}
 
 	@Override
@@ -95,6 +97,19 @@ public class WeightedNodesGraph implements Graph<WeightedNode> {
 		//TODO: Alter for deep copy
 		List<WeightedNode> children = new ArrayList<WeightedNode> (_weightedGraph.get(parent));
 		return children.iterator();
+	}
+	
+	private void checkRep()
+	{
+		for (WeightedNode node : _weightedGraph.keySet())
+		{
+			assert node.getCost() >= 0;
+			for (WeightedNode child : _weightedGraph.get(node))
+			{
+				assert _weightedGraph.containsKey(child);
+				assert (!node.equals(child));
+			}
+		}
 	}
 
 }
