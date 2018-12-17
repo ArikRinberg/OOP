@@ -1,5 +1,7 @@
 package homework2;
 
+import java.util.HashSet;
+
 /**
  * A WeightedNode class is a record type which contains a name, a cost, a color (and a XXX if needed)
  **/
@@ -22,7 +24,10 @@ public class WeightedNode implements Comparable<WeightedNode> {
   	 */	
 	private String color;
 	
-	
+	/**
+	 * 
+	 */
+	private boolean hasBackwardsEdge;
 	
   	/**
      * Creates a WeightedNode.
@@ -35,6 +40,7 @@ public class WeightedNode implements Comparable<WeightedNode> {
     	this.name = name;
       	this.cost = cost;
 		this.color = "White";
+		this.hasBackwardsEdge = false;
   	}
 
   
@@ -71,6 +77,16 @@ public class WeightedNode implements Comparable<WeightedNode> {
 	public void setColor(String color){
 		this.color = color;
 	}
+	
+	/**
+	 * @requires none
+	 * @modifies this
+	 * @effects the hasBackwardsEdge flag
+     */	
+	public void setHasBackwardsEdge (boolean hasBackwardsEdge){
+		this.hasBackwardsEdge = hasBackwardsEdge;
+	}
+	
 	
 	/**
 	 * Standard equality operation.

@@ -240,15 +240,11 @@ public class TestDriver {
   		WeightedNodesGraph graph = graphs.get(graphName);
   		Iterator<WeightedNode> iterator = graph.getNodes();
   		
-  		output.print(graphName + " contains: ");
+  		output.print(graphName + " contains:");
   		while(iterator.hasNext())
   		{
   			WeightedNode node = (WeightedNode)iterator.next();
-  			output.print(node.getName());	
-  			if (iterator.hasNext())
-  			{
-  				output.print(" ");
-  			}
+  			output.print(" " + node.getName());	
   		}
   		
 		output.println();
@@ -279,15 +275,11 @@ public class TestDriver {
   		Iterator<WeightedNode> iterator;
 		try {
 			iterator = graph.getChildren(parent);
-	  		output.print("the children of " + parentName + " in " + graphName + " are: ");
+	  		output.print("the children of " + parentName + " in " + graphName + " are:");
 	  		while(iterator.hasNext())
 	  		{
 	  			WeightedNode child = (WeightedNode)iterator.next();
-	  			output.print(child.getName());
-	  			if (iterator.hasNext())
-	  			{
-	  				output.print(" ");
-	  			}
+	  			output.print(" " + child.getName());
 	  		}
 	  		
 			output.println();
@@ -366,17 +358,18 @@ public class TestDriver {
   	    	String sourceArg = arguments.get(1);
   	    	dfsAlgorithm(graphName, sourceArg);
   		}
-  		else
+  		else if (arguments.size() == 3)
   		{
   			String graphName = arguments.get(0);
   	    	String sourceArg = arguments.get(1);
   	    	String destArg = arguments.get(2);
-  	    	
   	    	dfsAlgorithm(graphName, sourceArg, destArg);
   		}
-
-
-    	
+  		else
+  		{
+  			throw new CommandException(
+  					"Wrong number of source args for DfsAlgorithm");
+  		}
   	}
   	
 	private void dfsAlgorithm(String graphName, String sourceArg,
@@ -387,6 +380,35 @@ public class TestDriver {
   	// ___ = nodes.get(destArgs);
   	// output.println(...);
 	
+		WeightedNodesGraph graph = graphs.get(graphName);
+		WeightedNode startNode =  nodes.get(sourceArg);
+		WeightedNode endNode =  nodes.get(destArg);
+		
+		DfsAlgorithm<WeightedNode> dfs = new WeightedNodeDfsAlgorithm();
+		
+		try {
+			boolean result = dfs.DFS(graph, startNode, endNode);
+			output.print("dfs algorithm output " + graphName + " " + sourceArg + " -> " + destArg + ":");
+			if (!result)
+			{
+				output.println(" no path was found");
+			}
+			else
+			{
+				for (WeightedNode node : dfs.visited)
+				{
+					output.print(" " + node.getName());
+				}
+				
+				output.println();
+			}
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (GraphNodeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void dfsAlgorithm(String graphName, String sourceArg) {
@@ -394,6 +416,28 @@ public class TestDriver {
 	// ___ = graphs.get(graphName);
   	// ___ = nodes.get(sourceArgs);
   	// output.println(...);	
+		WeightedNodesGraph graph = graphs.get(graphName);
+		WeightedNode startNode =  nodes.get(sourceArg);
+		
+		DfsAlgorithm<WeightedNode> dfs = new WeightedNodeDfsAlgorithm();
+		
+		try {
+			dfs.DFS(graph, startNode);
+			output.print("dfs algorithm output " + graphName + " " + sourceArg+ ":");
+			for (WeightedNode node : dfs.visited)
+			{
+				output.print(" " + node.getName());
+			}
+			
+			output.println();
+
+		} catch (NullPointerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (GraphNodeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 

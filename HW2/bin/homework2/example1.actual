@@ -15,9 +15,10 @@ added edge from n1 to n2 in graph1
 # Print some stuff
 graph1 contains: n1 n2
 the children of n1 in graph1 are: n2
-the children of n2 in graph1 are: 
+the children of n2 in graph1 are:
 
 # Dfs Algorithm
+dfs algorithm output graph1 n1: n1 n2
 
 # Find a path
 

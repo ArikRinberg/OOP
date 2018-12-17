@@ -1,7 +1,11 @@
 package homework2;
+
 import java.lang.NullPointerException;
 import java.util.Iterator;
 
+/*
+ * A Graph class is a record type which nodes of type T and edges connecting nodes.
+ */
 public interface Graph<T> {
 		/**
 		 * Add a node with no edges to the graph.
@@ -23,7 +27,7 @@ public interface Graph<T> {
 		 * @throws
 		 *  NullPointerException - if start or end are null
 		 *  GraphEdgeException - if edge is already in the graph
-		 *  GraphNodeException - if at least one of the nodes isn't in the graph or start=end
+		 *  GraphNodeException - if at least one of the nodes isn't in the graph
 		 */
 		public void addEdge(T start, T end) throws NullPointerException, GraphEdgeException, GraphNodeException;
 
