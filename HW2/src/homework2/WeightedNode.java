@@ -79,6 +79,14 @@ public class WeightedNode implements Comparable<WeightedNode> {
 	}
 	
 	/**
+	 * Returns this.hasBackwardsEdge.
+     * @return this.hasBackwardsEdge
+     */	
+	public boolean getHasBackwardsEdge(){
+		return this.hasBackwardsEdge;
+	}
+	
+	/**
 	 * @requires none
 	 * @modifies this
 	 * @effects the hasBackwardsEdge flag

@@ -387,15 +387,15 @@ public class TestDriver {
 		DfsAlgorithm<WeightedNode> dfs = new WeightedNodeDfsAlgorithm();
 		
 		try {
-			boolean result = dfs.DFS(graph, startNode, endNode);
+			LinkedList<WeightedNode> visited = dfs.DFS(graph, startNode, endNode);
 			output.print("dfs algorithm output " + graphName + " " + sourceArg + " -> " + destArg + ":");
-			if (!result)
+			if (!visited.contains(endNode))
 			{
 				output.println(" no path was found");
 			}
 			else
 			{
-				for (WeightedNode node : dfs.visited)
+				for (WeightedNode node : visited)
 				{
 					output.print(" " + node.getName());
 				}
@@ -422,9 +422,9 @@ public class TestDriver {
 		DfsAlgorithm<WeightedNode> dfs = new WeightedNodeDfsAlgorithm();
 		
 		try {
-			dfs.DFS(graph, startNode);
+			LinkedList<WeightedNode> visited = dfs.DFS(graph, startNode);
 			output.print("dfs algorithm output " + graphName + " " + sourceArg+ ":");
-			for (WeightedNode node : dfs.visited)
+			for (WeightedNode node : visited)
 			{
 				output.print(" " + node.getName());
 			}

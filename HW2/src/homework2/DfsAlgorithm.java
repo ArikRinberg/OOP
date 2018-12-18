@@ -6,31 +6,29 @@ import java.util.PriorityQueue;
 
 public abstract class DfsAlgorithm<T> {
 	
-	public LinkedList<T> visited;
-	
-	public boolean DFS(Graph<T> graph, T startNode)
+	public LinkedList<T> DFS(Graph<T> graph, T startNode)
 			throws NullPointerException, GraphNodeException
 	{
 		return DFS(graph, startNode, null);
 	}
 	
-	public boolean DFS(Graph<T> graph, T startNode, T endNode) 
+	public LinkedList<T> DFS(Graph<T> graph, T startNode, T endNode) 
 			throws NullPointerException, GraphNodeException
 	{
-		visited = new LinkedList<T>();
+		LinkedList<T> visited = new LinkedList<T>();
 		if (startNode == null)
 		{
-			return false;
+			return visited;
 		}
 		
 		colorWhite(graph);
 		resetBackwardsEdges(graph);
-		boolean result = DFSHelper(graph, startNode, endNode);
+		DFSHelper(graph, startNode, endNode, visited);
 		colorWhite(graph);
-		return result;
+		return visited;
 	}
 	
-	private boolean DFSHelper(Graph<T> graph, T startNode, T endNode)
+	private boolean DFSHelper(Graph<T> graph, T startNode, T endNode, LinkedList<T> visited)
 			throws NullPointerException, GraphNodeException
 	{
 		PriorityQueue<T> children = new PriorityQueue<T>();
@@ -53,7 +51,7 @@ public abstract class DfsAlgorithm<T> {
 		{
 			if (getNodeColor(child).equals("White"))
 			{
-				if (DFSHelper(graph, child, endNode))
+				if (DFSHelper(graph, child, endNode, visited))
 				{
 					return true;
 				}

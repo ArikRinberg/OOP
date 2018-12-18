@@ -1,6 +1,6 @@
 package homework2;
 
-public class WeightedNodeDfsAlgorithm extends  DfsAlgorithm<WeightedNode>
+public class WeightedNodeDfsAlgorithm extends DfsAlgorithm<WeightedNode>
 {
 
 	@Override
