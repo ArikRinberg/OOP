@@ -339,8 +339,46 @@ public class TestDriver {
 
 
   	private void findPath(String graphName, List<String> sourceArgs,
-  						  List<String> destArgs) {
+  						  List<String> destArgs) 
+  	{
+  		WeightedNodesGraph graph = graphs.get(graphName); 
+  		ArrayList<NodeCountingPath> startPaths = new ArrayList<>();
+  		for (String sourceArg : sourceArgs)
+  		{
+  			WeightedNode startNode =  nodes.get(sourceArg);
+  			NodeCountingPath startPath = new NodeCountingPath(startNode);
+  			startPaths.add(startPath);
+  		}
+  		ArrayList<WeightedNode> destNodes = new ArrayList<>();
+  		for (String destArg : destArgs)
+  		{
+  			WeightedNode destNode =  nodes.get(destArg);
+  			destNodes.add(destNode);
+  		}
   		
+  		WeightedNodeDfsAlgorithm dfs = new WeightedNodeDfsAlgorithm();
+  		
+  		try
+  		{
+  			NodeCountingPath shortestPath = PathFinder.getShortestPath(graph, startPaths, destNodes, dfs);
+  			if (shortestPath == null)
+  			{
+  				output.println("no path found in " + graphName);
+  			}
+  			else
+  			{
+  				output.print("found path in " + graphName + ":");
+  				for (WeightedNode node : shortestPath)
+  				{
+					output.print(" " + node.getName());
+				}
+  				int cost =  (int)shortestPath.getCost();
+  				output.println(" with cost " + cost);
+  			}
+  		}
+  		catch (GraphNodeException e) {
+			// TODO: handle exception
+		}
   		// TODO: Insert your code here.
   		   
   		// ___ = graphs.get(graphName);

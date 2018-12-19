@@ -1,5 +1,6 @@
 package homework2;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -31,7 +32,7 @@ public abstract class DfsAlgorithm<T> {
 	private boolean DFSHelper(Graph<T> graph, T startNode, T endNode, LinkedList<T> visited)
 			throws NullPointerException, GraphNodeException
 	{
-		PriorityQueue<T> children = new PriorityQueue<T>();
+		PriorityQueue<T> children = new PriorityQueue<T>(Collections.reverseOrder());
 		Iterator<T> iterator = graph.getChildren(startNode);
 		while (iterator.hasNext())
 		{
