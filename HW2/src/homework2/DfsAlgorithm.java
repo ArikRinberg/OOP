@@ -1,6 +1,7 @@
 package homework2;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -22,14 +23,17 @@ public abstract class DfsAlgorithm<T> {
 			return visited;
 		}
 		
+		HashMap<T, Integer> nodeDepths = new HashMap<>();
+		
 		colorWhite(graph);
 		resetBackwardsEdges(graph);
-		DFSHelper(graph, startNode, endNode, visited);
+		DFSHelper(graph, startNode, endNode, visited, nodeDepths, 0);
 		colorWhite(graph);
 		return visited;
 	}
 	
-	private boolean DFSHelper(Graph<T> graph, T startNode, T endNode, LinkedList<T> visited)
+	private boolean DFSHelper(Graph<T> graph, T startNode, T endNode, LinkedList<T> visited,
+			HashMap<T, Integer> nodeDepths, int currentDepth)
 			throws NullPointerException, GraphNodeException
 	{
 		PriorityQueue<T> children = new PriorityQueue<T>(Collections.reverseOrder());
@@ -42,6 +46,7 @@ public abstract class DfsAlgorithm<T> {
 		
 		visited.add(startNode);
 		setNodeColor(startNode, "Grey");
+		nodeDepths.put(startNode, currentDepth);
 		
 		if (startNode.equals(endNode))
 		{
@@ -52,14 +57,17 @@ public abstract class DfsAlgorithm<T> {
 		{
 			if (getNodeColor(child).equals("White"))
 			{
-				if (DFSHelper(graph, child, endNode, visited))
+				if (DFSHelper(graph, child, endNode, visited, nodeDepths, currentDepth+1))
 				{
 					return true;
 				}
 			}
 			else
 			{
-				setNodeHasBackwardsEdge(startNode, true);
+				if (nodeDepths.get(startNode) > nodeDepths.get(child) || startNode.equals(child))
+				{
+					setNodeHasBackwardsEdge(startNode, true);
+				}
 			}
 		}
 		

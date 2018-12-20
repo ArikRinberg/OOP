@@ -239,12 +239,18 @@ public class TestDriver {
   	private void listNodes(String graphName) {
   		WeightedNodesGraph graph = graphs.get(graphName);
   		Iterator<WeightedNode> iterator = graph.getNodes();
-  		
-  		output.print(graphName + " contains:");
+		ArrayList<String> nodeNames = new ArrayList<String>();
   		while(iterator.hasNext())
   		{
   			WeightedNode node = (WeightedNode)iterator.next();
-  			output.print(" " + node.getName());	
+  			nodeNames.add(node.getName());	
+  		}
+  		
+  		Collections.sort(nodeNames);
+  		output.print(graphName + " contains:");
+  		for (String nodeName : nodeNames)
+  		{
+  			output.print(" " + nodeName);
   		}
   		
 		output.println();
@@ -275,11 +281,18 @@ public class TestDriver {
   		Iterator<WeightedNode> iterator;
 		try {
 			iterator = graph.getChildren(parent);
-	  		output.print("the children of " + parentName + " in " + graphName + " are:");
+			ArrayList<String> childrenName = new ArrayList<String>();
 	  		while(iterator.hasNext())
 	  		{
 	  			WeightedNode child = (WeightedNode)iterator.next();
-	  			output.print(" " + child.getName());
+	  			childrenName.add(child.getName());	
+	  		}
+	  		
+	  		output.print("the children of " + parentName + " in " + graphName + " are:");
+	  		Collections.sort(childrenName);
+	  		for (String childName : childrenName)
+	  		{
+	  			output.print(" " + childName);
 	  		}
 	  		
 			output.println();
