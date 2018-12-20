@@ -18,22 +18,24 @@ public abstract class DfsAlgorithm<T> {
 			throws NullPointerException, GraphNodeException
 	{
 		LinkedList<T> visited = new LinkedList<T>();
-		if (startNode == null)
+		if (graph == null || startNode == null)
 		{
-			return visited;
+			throw new NullPointerException();
 		}
 		
-		HashMap<T, Integer> nodeDepths = new HashMap<>();
-		
+		// Reset the color and backwards edges
 		colorWhite(graph);
 		resetBackwardsEdges(graph);
-		DFSHelper(graph, startNode, endNode, visited, nodeDepths, 0);
+		
+		// Run DFS
+		DFSHelper(graph, startNode, endNode, visited);
+		
+		// Reset the color
 		colorWhite(graph);
 		return visited;
 	}
 	
-	private boolean DFSHelper(Graph<T> graph, T startNode, T endNode, LinkedList<T> visited,
-			HashMap<T, Integer> nodeDepths, int currentDepth)
+	private boolean DFSHelper(Graph<T> graph, T startNode, T endNode, LinkedList<T> visited)
 			throws NullPointerException, GraphNodeException
 	{
 		PriorityQueue<T> children = new PriorityQueue<T>(Collections.reverseOrder());
@@ -46,43 +48,73 @@ public abstract class DfsAlgorithm<T> {
 		
 		visited.add(startNode);
 		setNodeColor(startNode, "Grey");
-		nodeDepths.put(startNode, currentDepth);
 		
+		// First check for backward edges
+		for (T child : children)
+		{
+			if (getNodeColor(child).equals("Grey"))
+			{
+				setNodeHasBackwardsEdge(startNode, true);
+			}
+		}
+		
+		// Check if we're done
 		if (startNode.equals(endNode))
 		{
 			return true;
 		}
 		
+		// Recursive DFS on each of the children
 		for (T child : children)
 		{
-			if (getNodeColor(child).equals("White"))
+			if (getNodeColor(child).equals("White") && 
+					DFSHelper(graph, child, endNode, visited))
 			{
-				if (DFSHelper(graph, child, endNode, visited, nodeDepths, currentDepth+1))
-				{
-					return true;
-				}
-			}
-			else
-			{
-				if (nodeDepths.get(startNode) > nodeDepths.get(child) || startNode.equals(child))
-				{
-					setNodeHasBackwardsEdge(startNode, true);
-				}
+				return true;
 			}
 		}
 		
+		// We're done with this node, paint it black
 		setNodeColor(startNode, "Black");
 		
+		// Didn't find the destination :(
 		return false;
 	}
 	
-	public abstract String getNodeColor(T node);
+	/**
+	 * Get the color of a node
+	 * @requires none
+	 * @modifies node
+	 * @return node color.
+	 * @throws NullPointerException - node==null
+	 */
+	public abstract String getNodeColor(T node) throws NullPointerException;
 	
-	public abstract void setNodeColor(T node, String color);
+	/**
+	 * Set the color of a node
+	 * @requires none
+	 * @modifies none
+	 * @return none.
+	 * @throws NullPointerException - node==null || color==null
+	 */
+	public abstract void setNodeColor(T node, String color) throws NullPointerException;
 		
-	public abstract void setNodeHasBackwardsEdge(T node, boolean hasBackwardsEdge);
+	/**
+	 * Set if the node has backwards edges or not
+	 * @requires none
+	 * @modifies node
+	 * @return none.
+	 * @throws NullPointerException - node==null
+	 */
+	public abstract void setNodeHasBackwardsEdge(T node, boolean hasBackwardsEdge)
+			throws NullPointerException;
 
-	
+	/**
+	 * Sets all node colors to white in graph 
+	 * @requires none
+	 * @modifies graph
+	 * @return none.
+	 */
 	private void colorWhite(Graph<T> graph)
 	{
 		Iterator<T> iterator = graph.getNodes();
@@ -93,6 +125,12 @@ public abstract class DfsAlgorithm<T> {
 		}
 	}
 	
+	/**
+	 * Sets all backwards edges in graph to false
+	 * @requires none
+	 * @modifies graph
+	 * @return none.
+	 */
 	private void resetBackwardsEdges(Graph<T> graph)
 	{
 		Iterator<T> iterator = graph.getNodes();

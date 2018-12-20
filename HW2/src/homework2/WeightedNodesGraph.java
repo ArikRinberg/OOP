@@ -11,4 +11,10 @@ public class WeightedNodesGraph extends Graph<WeightedNode> {
 		
 		super.addNode(node);
 	}
+
+	@Override
+	protected String getNodeName(WeightedNode node)
+	{
+		return node.getName();
+	}
 }

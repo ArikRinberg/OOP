@@ -11,7 +11,7 @@ import java.util.List;
 /*
  * A Graph class is a record type which nodes of type T and edges connecting nodes.
  */
-public class Graph<T> {
+public abstract class Graph<T> {
 	
   	// Abstraction Function:
   	// A graph G is NaN if:
@@ -28,7 +28,8 @@ public class Graph<T> {
 	//       2. an edge (a,b) is in the graph where a=node and b=child
 	//  2. node appears only once in the graph 
 	
-	private HashMap<T, HashSet<T>> _graph;
+	private HashMap<String, T> _nodes;
+	private HashMap<T, HashSet<T>> _children;
 	
 	/**
   	 * Constructor for Graph.
@@ -37,7 +38,9 @@ public class Graph<T> {
    	 **/
 	public Graph()
 	{
-		_graph = new HashMap<T, HashSet<T>>();
+		_nodes =  new HashMap<String, T>();
+		_children = new HashMap<T, HashSet<T>>();
+		
 		checkRep();
 	}
 	
@@ -57,12 +60,14 @@ public class Graph<T> {
 			throw new NullPointerException();
 		}
 		
-		if(_graph.containsKey(node))
+		String nodeName = getNodeName(node);
+		if(_nodes.containsKey(getNodeName(node)))
 		{
 			throw new GraphNodeException();
 		}
 		
-		_graph.put(node, new HashSet<T>());
+		_nodes.put(nodeName, node);
+		_children.put(node, new HashSet<T>());
 		
 		checkRep();
 	}
@@ -85,14 +90,27 @@ public class Graph<T> {
 			throw new NullPointerException();
 		}
 		
-		if(!_graph.containsKey(start) || !_graph.containsKey(end))
+		String startName = getNodeName(start);
+		String endName = getNodeName(end);
+		
+		if(!_nodes.containsKey(startName) || !_nodes.containsKey(endName))
 		{
 			throw new GraphNodeException();
 		}
 			
-		HashSet<T> childrenOfStart = _graph.get(start);
+		T startNode = _nodes.get(startName);
+		HashSet<T> childrenOfStart = _children.get(start);
 		
-		childrenOfStart.add(end);
+		for (T child : childrenOfStart)
+		{
+			if (endName.equals(getNodeName(child)))
+			{
+				throw new GraphEdgeException();
+			}
+		}
+		
+		T endNode = _nodes.get(endName);
+		childrenOfStart.add(endNode);
 		
 		checkRep();
 	}
@@ -106,7 +124,7 @@ public class Graph<T> {
 	public Iterator<T> getNodes()
 	{
 		//TODO: Alter for deep copy
-		List<T> nodes = new ArrayList<T> (_graph.keySet());
+		List<T> nodes = new ArrayList<T> (_children.keySet());
 		return nodes.iterator();
 	}
 	
@@ -126,23 +144,28 @@ public class Graph<T> {
 		{
 			throw new NullPointerException();
 		}
-		if (!_graph.containsKey(parent))
+		
+		String parentName = getNodeName(parent);
+		if (!_nodes.containsKey(parentName))
 		{
 			throw new GraphNodeException();
 		}
 		
 		//TODO: Alter for deep copy
-		List<T> children = new ArrayList<T> (_graph.get(parent));
+		T parentNode = _nodes.get(parentName);
+		List<T> children = new ArrayList<T> (_children.get(parentNode));
 		return children.iterator();
 	}
 	
+	protected abstract String getNodeName(T node);
+	
 	private void checkRep()
 	{
-		for (T node : _graph.keySet())
+		for (T node : _children.keySet())
 		{
-			for (T child : _graph.get(node))
+			for (T child : _children.get(node))
 			{
-				assert _graph.containsKey(child);
+				assert _children.containsKey(child);
 			}
 		}
 	}
