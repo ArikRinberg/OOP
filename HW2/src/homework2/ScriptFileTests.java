@@ -29,7 +29,8 @@ public class ScriptFileTests {
 	 * Creates a new ScriptFileTests case, which runs the given test file.
 	 * @param testFile - test file to run
 	 */
-	public ScriptFileTests(java.nio.file.Path testFile) {
+	public ScriptFileTests(java.nio.file.Path testFile) 
+	{
 		this.testFile = testFile;
 	}
 
@@ -38,20 +39,24 @@ public class ScriptFileTests {
 	 * @return Input arguments for the class constructor
 	 */
 	@Parameters
-	public static Collection<Object[]> getFiles() {
-		try {
+	public static Collection<Object[]> getFiles()
+	{
+		try
+		{
 			java.nio.file.Path curDirectory =
 					Paths.get(ScriptFileTests.class.getResource(
 							"ScriptFileTests.class").toURI()).getParent();
 		Collection<Object[]> params = new ArrayList<>();
 		DirectoryStream<java.nio.file.Path> stream =
 				Files.newDirectoryStream(curDirectory, "*.test");
-			for (java.nio.file.Path file: stream) {
+			for (java.nio.file.Path file: stream) 
+			{
 				Object[] arr = new Object[] { file };
 				params.add(arr);
 			}
 			return params;
-		} catch (IOException | java.net.URISyntaxException e) {
+		} catch (IOException | java.net.URISyntaxException e)
+		{
 			throw new RuntimeException(e);
 		}
 	}
@@ -63,9 +68,12 @@ public class ScriptFileTests {
 	 * @throw FileNotFoundException - if an attempt to open the file has failed
 	 * @throw IOException - if any other I/O exception has occurred
 	 */
-	private String fileContents(java.nio.file.Path file) throws IOException {
+	private String fileContents(java.nio.file.Path file) throws IOException
+	{
 		if (file == null)
+		{
 			throw new RuntimeException("No file specified");
+		}
 
 		StringBuilder result = new StringBuilder();
 		char[] data = new char[4096]; // a reasonable block size
@@ -74,7 +82,9 @@ public class ScriptFileTests {
 		
 		int charsRead;
 		while ((charsRead = fileReader.read(data)) != -1)
+		{
 			result.append(data, 0, charsRead);
+		}
 
 		fileReader.close();
 		
@@ -90,8 +100,10 @@ public class ScriptFileTests {
 	 * @returns the contents of the output file
 	 * @throw IOException - on any I/O exception
 	 */
-	private String runScriptFile() throws IOException {
-		if (testFile == null) {
+	private String runScriptFile() throws IOException 
+	{
+		if (testFile == null) 
+		{
 			throw new RuntimeException("No file specified");
 		}
 
@@ -114,7 +126,8 @@ public class ScriptFileTests {
 	 * @return a File with the same name as testFile, except that the test
 	 *         suffix is replaced by the given suffix
 	 */
-	private java.nio.file.Path fileWithSuffix(String newSuffix) {
+	private java.nio.file.Path fileWithSuffix(String newSuffix) 
+	{
 		String driverName = testFile.toString();
 		String baseName = driverName.substring(0,
 				driverName.length() - "test".length());
@@ -127,7 +140,8 @@ public class ScriptFileTests {
 	 * @throws IOException- on any I/O exception
 	 */
 	@Test
-	public void testWithScriptFile() throws IOException {
+	public void testWithScriptFile() throws IOException 
+	{
 		java.nio.file.Path expected = fileWithSuffix("expected");
 
 		assertEquals(testFile.toString(), fileContents(expected), runScriptFile());

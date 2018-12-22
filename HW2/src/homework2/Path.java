@@ -29,7 +29,8 @@ import java.util.Iterator;
  * </p>
  */
 public interface Path<N, P extends Path<N,P>>
-			extends Iterable<N>, Comparable<Path<?,?>>  {
+			extends Iterable<N>, Comparable<Path<?,?>>  
+{
 
 	/**
      * Creates an extended path by adding a new node to its end.

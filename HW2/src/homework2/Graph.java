@@ -11,7 +11,8 @@ import java.util.List;
 /*
  * A Graph class is a record type which nodes of type T and edges connecting nodes.
  */
-public abstract class Graph<T> {
+public abstract class Graph<T> 
+{
 	
   	// Abstraction Function:
   	// A graph G is NaN if:

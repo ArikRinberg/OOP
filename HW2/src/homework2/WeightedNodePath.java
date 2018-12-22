@@ -13,7 +13,8 @@ import java.util.List;
  * The main purpose of this class is to illustrate that there can be multiple
  * implementations of Paths of WeightedNodes. 
  */
-public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
+public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> 
+{
 
 	// RepInvariant:
   	//   (node != null) &&
@@ -62,7 +63,8 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
      * @effects Creates a new WeightedNodePath which originates at
      * <tte>node</tt>.
      */
-  	public WeightedNodePath(WeightedNode node) {
+  	public WeightedNodePath(WeightedNode node)
+  	{
     	this(node, null);
   	}
 
@@ -74,7 +76,8 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
      * @effects Creates a new WeightedNodePath 'res' such that
      * 			res.elements = path.elements + [node]
      */
-  	private WeightedNodePath(WeightedNode node, WeightedNodePath path) {
+  	private WeightedNodePath(WeightedNode node, WeightedNodePath path)
+  	{
     	if (node == null)
       		throw new IllegalArgumentException();
 
@@ -95,7 +98,8 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
      *	         p.elements == this.elements + [n] &&
      *           p.cost >= this.cost
      */
-  	public WeightedNodePath extend(WeightedNode node) {
+  	public WeightedNodePath extend(WeightedNode node) 
+  	{
   		return new WeightedNodePath(node, this);
   	}
 
@@ -104,7 +108,8 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
 	 * Returns this.cost.
 	 * @return this.cost
 	 */
-  	public double getCost() {
+  	public double getCost() 
+  	{
     	return this.cost;
   	}
 
@@ -114,11 +119,13 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
      * @return an Iterator over the elements in the path in order from start
      *         to end.
      */
-  	public Iterator<WeightedNode> iterator() {
+  	public Iterator<WeightedNode> iterator() 
+  	{
   		// reverse the linked list, so that elements are returned in order
   		// from start to end of the path.
   		List<WeightedNode> nodes = new LinkedList<WeightedNode>();
-  		for (WeightedNodePath curNode = this; curNode != null; curNode = curNode.path) {
+  		for (WeightedNodePath curNode = this; curNode != null; curNode = curNode.path) 
+  		{
   			nodes.add(0, curNode.getEnd());
   		}
   		return nodes.iterator();
@@ -131,15 +138,21 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
 	 * @return a string representation of this in the form
 	 * 		   [WeightedNodePath: node1, node2, node3, ...].
 	 */
-  	public String toString() {
+  	public String toString() 
+  	{
     	StringBuffer buff = new StringBuffer();
     	buff.append("[WeightedNodePath: ");
     	boolean first = true;
-    	for (WeightedNode wn : this) {
+    	for (WeightedNode wn : this) 
+    	{
     		if (first)
+    		{
     			first = false;
+    		}
     		else
+    		{
     			buff.append(", ");
+    		}
     		buff.append(wn);
     	}
     	buff.append("]");
@@ -152,9 +165,12 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
      * @return true iff o is a WeightedNodePath and o.elements is the
      * 		   same sequence as this.elements
      */
-  	public boolean equals(Object o) {
+  	public boolean equals(Object o) 
+  	{
     	if (o instanceof WeightedNodePath)
-      		return this.equals((WeightedNodePath)o);
+    	{
+    		return this.equals((WeightedNodePath)o);
+    	}
     	return false;
   	}
 
@@ -163,7 +179,8 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
 	 * Standard equality operation.
      * @return true iff wnp.elements is the same sequence as this.elements
      */
-  	public boolean equals(WeightedNodePath wnp) {
+  	public boolean equals(WeightedNodePath wnp) 
+  	{
     	return (wnp != null) &&
       		   this.node.equals(wnp.node) &&
       		   (this.path == null ?
@@ -175,7 +192,8 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
 	 * Returns a hash code value for this.
 	 * @return a hash code value for this.
 	 */
-  	public int hashCode() {
+  	public int hashCode() 
+  	{
     	return node.hashCode() + (this.path == null ? 0 : 13*path.hashCode());
   	}
   	
@@ -187,7 +205,8 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
   	 *         is greater than p.cost.
   	 * @see java.lang.Comparable#compareTo
   	 */
-  	public int compareTo(Path<?,?> p){
+  	public int compareTo(Path<?,?> p)
+  	{
   		return Double.compare(this.getCost(), p.getCost());
   	}
   	        
@@ -195,7 +214,8 @@ public class WeightedNodePath implements Path<WeightedNode, WeightedNodePath> {
   	/**
   	 * Return the end of this path
   	 */
-  	public WeightedNode getEnd(){
+  	public WeightedNode getEnd()
+  	{
   		return node;
   	}
 }

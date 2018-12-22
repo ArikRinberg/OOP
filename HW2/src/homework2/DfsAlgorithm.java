@@ -6,7 +6,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-public abstract class DfsAlgorithm<T> {
+public abstract class DfsAlgorithm<T> 
+{
 	
 	public LinkedList<T> DFS(Graph<T> graph, T startNode)
 			throws NullPointerException, GraphNodeException

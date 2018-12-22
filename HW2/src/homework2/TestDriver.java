@@ -11,7 +11,8 @@ import java.util.*;
  * This class implements a testing driver which reads test scripts
  * from files for testing Graph and PathFinder.
  */
-public class TestDriver {
+public class TestDriver
+{
 
 	// String -> Graph: maps the names of graphs to the actual graph
 	// TODO: Parameterize the next line correctly.
@@ -28,7 +29,8 @@ public class TestDriver {
      * @effects Creates a new TestDriver which reads command from
      * <tt>r</tt> and writes results to <tt>w</tt>.
      */
-  	public TestDriver(Reader r, Writer w) {
+  	public TestDriver(Reader r, Writer w) 
+  	{
     	input = new BufferedReader(r);
     	output = new PrintWriter(w);
   	}
@@ -42,25 +44,31 @@ public class TestDriver {
      * @throws IOException - if the input or output sources encounter an
      * 		   IOException.
      */
-  	public void runTests() throws IOException {
+  	public void runTests() throws IOException 
+  	{
 
     	String inputLine;
-		while ((inputLine = input.readLine()) != null) {
+		while ((inputLine = input.readLine()) != null) 
+		{
 			// echo blank and comment lines
       		if (inputLine.trim().length() == 0 ||
-      		    inputLine.charAt(0) == '#') {
+      		    inputLine.charAt(0) == '#')
+      		{
         		output.println(inputLine);
         		continue;
       		}
 
       		// separate the input line on white space
       		StringTokenizer st = new StringTokenizer(inputLine);
-      		if (st.hasMoreTokens()) {
+      		if (st.hasMoreTokens()) 
+      		{
         		String command = st.nextToken();
 
         		List<String> arguments = new ArrayList<>();
         		while (st.hasMoreTokens())
-          			arguments.add(st.nextToken());
+        		{
+        			arguments.add(st.nextToken());
+        		}
 
         		executeCommand(command, arguments);
       		}
@@ -70,173 +78,188 @@ public class TestDriver {
   	}
 
 
-  	private void executeCommand(String command, List<String> arguments) {
+  	private void executeCommand(String command, List<String> arguments)
+  	{
 
-    	try {
-      		if (command.equals("CreateGraph")) {
+    	try 
+    	{
+      		if (command.equals("CreateGraph")) 
+      		{
         		createGraph(arguments);
-      		} else if (command.equals("CreateNode")) {
+      		}
+      		else if (command.equals("CreateNode"))
+      		{
         		createNode(arguments);
-      		} else if (command.equals("AddNode")) {
+      		} 
+      		else if (command.equals("AddNode"))
+      		{
         		addNode(arguments);
-      		} else if (command.equals("AddEdge")) {
+      		} 
+      		else if (command.equals("AddEdge"))
+      		{
         		addEdge(arguments);
-      		} else if (command.equals("ListNodes")) {
+      		} 
+      		else if (command.equals("ListNodes"))
+      		{
         		listNodes(arguments);
-      		} else if (command.equals("ListChildren")) {
+      		}
+      		else if (command.equals("ListChildren")) 
+      		{
         		listChildren(arguments);
-      		} else if (command.equals("FindPath")) {
+      		} 
+      		else if (command.equals("FindPath"))
+      		{
         		findPath(arguments);
-      		} else if (command.equals("DfsAlgorithm")){
+      		} 
+      		else if (command.equals("DfsAlgorithm"))
+      		{
 				dfsAlgorithm(arguments);
-			}else {
+			}
+      		else 
+      		{
         		output.println("Unrecognized command: " + command);
       		}
-    	} catch (Exception e) {
+    	} 
+    	catch (Exception e) 
+    	{
       		output.println("Exception: " + e.toString());
     	}
   	}
 
 
-	private void createGraph(List<String> arguments) {
+	private void createGraph(List<String> arguments) 
+	{
 
     	if (arguments.size() != 1)
-      		throw new CommandException(
-				"Bad arguments to CreateGraph: " + arguments);
+    	{
+    		throw new CommandException(
+    				"Bad arguments to CreateGraph: " + arguments);
+    	}
 
     	String graphName = arguments.get(0);
     	createGraph(graphName);
   	}
 
 
-  	private void createGraph(String graphName) {
+  	private void createGraph(String graphName)
+  	{
   		
   		graphs.put(graphName, new WeightedNodesGraph());
   		
   		output.println("created graph "+ graphName);
-  		//TODO: Insert your code here.
-  		
-  		// graphs.put(graphName, ___);
-  		// output.println(...);
-
   	}
  
   	
-  	private void createNode(List<String> arguments) {
+  	private void createNode(List<String> arguments)
+  	{
 
     	if (arguments.size() != 2)
-      		throw new CommandException(
-				"Bad arguments to createNode: " + arguments);
-
+    	{
+    		throw new CommandException(
+    				"Bad arguments to createNode: " + arguments);
+    	}
     	String nodeName = arguments.get(0);
     	String cost = arguments.get(1);
     	createNode(nodeName, cost);
   	}
 
 
- 	private void createNode(String nodeName, String cost) {
-
- 		// TODO: Insert your code here.
- 		
- 		// nodes.put(nodeName, ___);
- 		// output.println(...);
-
+ 	private void createNode(String nodeName, String cost)
+ 	{
  		WeightedNode node = new WeightedNode(nodeName, Integer.parseInt(cost));
  		nodes.put(nodeName, node);
  		output.println("created node "+ nodeName+ " with cost " + cost);
- 		
   	}
 	
 
-  	private void addNode(List<String> arguments) {
-
+  	private void addNode(List<String> arguments) 
+  	{
     	if (arguments.size() != 2)
-      		throw new CommandException(
-				"Bad arguments to addNode: " + arguments);
-
+    	{
+    		throw new CommandException(
+    				"Bad arguments to addNode: " + arguments);
+    	}
     	String graphName = arguments.get(0);
     	String nodeName = arguments.get(1);
     	addNode(graphName, nodeName);
   	}
 
 
-  	private void addNode(String graphName, String nodeName) {
-  		
+  	private void addNode(String graphName, String nodeName) 
+  	{
   		WeightedNodesGraph graph = graphs.get(graphName);
   		WeightedNode node = nodes.get(nodeName);
   		
-  		try {
+  		try 
+  		{
 			graph.addNode(node);
 			output.println("added node "+ nodeName+ " to " + graphName);
-		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
+		} 
+  		catch (NullPointerException e) 
+  		{
 			e.printStackTrace();
-		} catch (GraphNodeException e) {
-			// TODO Auto-generated catch block
+		} 
+  		catch (GraphNodeException e) 
+  		{
 			e.printStackTrace();
-		}
-  		// TODO: Insert your code here.
-  		 
-  		// ___ = graphs.get(graphName);
-  		// ___ = nodes.get(nodeName);
-  		// output.println(...);
-  		
+		} 		
   	}
 
 
-  	private void addEdge(List<String> arguments) {
-
+  	private void addEdge(List<String> arguments) 
+  	{
     	if (arguments.size() != 3)
-      		throw new CommandException(
-				"Bad arguments to addEdge: " + arguments);
-
+    	{
+    		throw new CommandException(
+    				"Bad arguments to addEdge: " + arguments);
+    	}
     	String graphName = arguments.get(0);
     	String parentName = arguments.get(1);
     	String childName = arguments.get(2);
     	addEdge(graphName, parentName, childName);
   	}
 
-
-	private void addEdge(String graphName, String parentName, String childName) {
-		
+  	
+	private void addEdge(String graphName, String parentName, String childName)
+	{
 		WeightedNodesGraph graph = graphs.get(graphName);
   		WeightedNode start = nodes.get(parentName);
   		WeightedNode end = nodes.get(childName);
-  		try {
+  		
+  		try 
+  		{
 			graph.addEdge(start, end);
 			output.println("added edge from " + parentName+ " to " + childName + " in " + graphName);
-		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (GraphEdgeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (GraphNodeException e) {
-			// TODO Auto-generated catch block
+		}
+  		catch (NullPointerException e)
+  		{
 			e.printStackTrace();
 		}
-		// TODO: Insert your code here.
-		  
-		// ___ = graphs.get(graphName);
-		// ___ = nodes.get(parentName);
-		// ___ = nodes.get(childName);
-		// output.println(...);
-
+  		catch (GraphEdgeException e) 
+  		{
+			e.printStackTrace();
+		} 
+  		catch (GraphNodeException e) 
+  		{
+			e.printStackTrace();
+		}
   	}
 
 
-  	private void listNodes(List<String> arguments) {
-
+  	private void listNodes(List<String> arguments) 
+  	{
     	if (arguments.size() != 1)
-      		throw new CommandException(
-				"Bad arguments to listNodes: " + arguments);
-
+    	{
+    		throw new CommandException(
+    				"Bad arguments to listNodes: " + arguments);
+    	}
     	String graphName = arguments.get(0);
     	listNodes(graphName);
   	}
 
-
-  	private void listNodes(String graphName) {
+  	
+  	private void listNodes(String graphName) 
+  	{
   		WeightedNodesGraph graph = graphs.get(graphName);
   		Iterator<WeightedNode> iterator = graph.getNodes();
 		ArrayList<String> nodeNames = new ArrayList<String>();
@@ -254,20 +277,16 @@ public class TestDriver {
   		}
   		
 		output.println();
-
-  		// TODO: Insert your code here.
-  		   
-  		// ___ = graphs.get(graphName);
-  		// output.println(...);
-
   	}
 
 
-  	private void listChildren(List<String> arguments) {
-
+  	private void listChildren(List<String> arguments) 
+  	{
     	if (arguments.size() != 2)
-      		throw new CommandException(
-				"Bad arguments to listChildren: " + arguments);
+    	{
+    		throw new CommandException(
+    				"Bad arguments to listChildren: " + arguments);
+    	}
 
     	String graphName = arguments.get(0);
     	String parentName = arguments.get(1);
@@ -275,11 +294,13 @@ public class TestDriver {
   	}
 
 
-  	private void listChildren(String graphName, String parentName) {
+  	private void listChildren(String graphName, String parentName)
+  	{
   		WeightedNodesGraph graph = graphs.get(graphName);
   		WeightedNode parent = nodes.get(parentName);
   		Iterator<WeightedNode> iterator;
-		try {
+		try 
+		{
 			iterator = graph.getChildren(parent);
 			ArrayList<String> childrenName = new ArrayList<String>();
 	  		while(iterator.hasNext())
@@ -297,55 +318,60 @@ public class TestDriver {
 	  		
 			output.println();
 			
-		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (NullPointerException e) 
+		{
 			e.printStackTrace();
-		} catch (GraphNodeException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (GraphNodeException e) 
+		{
 			e.printStackTrace();
 		}
-  		
-  		// TODO: Insert your code here.
-  		    
-  		// ___ = graphs.get(graphName);
-  		// ___ = nodes.get(parentName);
-  		// output.println(...);
-  		
   	}
 
 
-  	private void findPath(List<String> arguments) {
+  	private void findPath(List<String> arguments) 
+  	{
 
     	String graphName;
     	List<String> sourceArgs = new ArrayList<>();
     	List<String> destArgs = new ArrayList<>();
 
     	if (arguments.size() < 1)
-      		throw new CommandException(
-				"Bad arguments to FindPath: " + arguments);
+    	{
+    		throw new CommandException(
+    				"Bad arguments to FindPath: " + arguments);
+    	}
 
     	Iterator<String> iter = arguments.iterator();
     	graphName = iter.next();
 
 		// extract source arguments
-    	while (iter.hasNext()) {
+    	while (iter.hasNext()) 
+    	{
       		String s = iter.next();
       		if (s.equals("->"))
-        		break;
+      		{
+      			break;
+      		}
       		sourceArgs.add(s);
     	}
 
 		// extract destination arguments
     	while (iter.hasNext())
-      		destArgs.add(iter.next());
-
+    	{
+    		destArgs.add(iter.next());
+    	}
     	if (sourceArgs.size() < 1)
-      		throw new CommandException(
-				"Too few source args for FindPath");
-
+    	{
+    		throw new CommandException(
+    				"Too few source args for FindPath");
+    	}
     	if (destArgs.size() < 1)
-      		throw new CommandException(
-				"Too few dest args for FindPath");
+    	{
+    		throw new CommandException(
+    				"Too few dest args for FindPath");
+    	}
 
     	findPath(graphName, sourceArgs, destArgs);
   	}
@@ -389,16 +415,10 @@ public class TestDriver {
   				output.println(" with cost " + cost);
   			}
   		}
-  		catch (GraphNodeException e) {
+  		catch (GraphNodeException e) 
+  		{
 			// TODO: handle exception
-		}
-  		// TODO: Insert your code here.
-  		   
-  		// ___ = graphs.get(graphName);
-  		// ___ = nodes.get(sourceArgs.get(i));
-  		// ___ = nodes.get(destArgs.get(i));
-  		// output.println(...);
-		
+		}		
   	}
 	
   	private void dfsAlgorithm(List<String> arguments)
@@ -424,20 +444,16 @@ public class TestDriver {
   	}
   	
 	private void dfsAlgorithm(String graphName, String sourceArg,
-							  String destArg) {
-	// TODO: Insert you code here.			
-	// ___ = graphs.get(graphName);
-  	// ___ = nodes.get(sourceArgs);
-  	// ___ = nodes.get(destArgs);
-  	// output.println(...);
-	
+							  String destArg) 
+	{	
 		WeightedNodesGraph graph = graphs.get(graphName);
 		WeightedNode startNode =  nodes.get(sourceArg);
 		WeightedNode endNode =  nodes.get(destArg);
 		
 		DfsAlgorithm<WeightedNode> dfs = new WeightedNodeDfsAlgorithm();
 		
-		try {
+		try 
+		{
 			LinkedList<WeightedNode> visited = dfs.DFS(graph, startNode, endNode);
 			output.print("dfs algorithm output " + graphName + " " + sourceArg + " -> " + destArg + ":");
 			if (!visited.contains(endNode))
@@ -453,26 +469,27 @@ public class TestDriver {
 				
 				output.println();
 			}
-		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (NullPointerException e) 
+		{
 			e.printStackTrace();
-		} catch (GraphNodeException e) {
+		} 
+		catch (GraphNodeException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	private void dfsAlgorithm(String graphName, String sourceArg) {
-	// TODO: Insert you code here.	
-	// ___ = graphs.get(graphName);
-  	// ___ = nodes.get(sourceArgs);
-  	// output.println(...);	
+	private void dfsAlgorithm(String graphName, String sourceArg) 
+	{
 		WeightedNodesGraph graph = graphs.get(graphName);
 		WeightedNode startNode =  nodes.get(sourceArg);
 		
 		DfsAlgorithm<WeightedNode> dfs = new WeightedNodeDfsAlgorithm();
 		
-		try {
+		try 
+		{
 			LinkedList<WeightedNode> visited = dfs.DFS(graph, startNode);
 			output.print("dfs algorithm output " + graphName + " " + sourceArg+ ":");
 			for (WeightedNode node : visited)
@@ -482,45 +499,56 @@ public class TestDriver {
 			
 			output.println();
 
-		} catch (NullPointerException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (NullPointerException e) 
+		{
 			e.printStackTrace();
-		} catch (GraphNodeException e) {
-			// TODO Auto-generated catch block
+		} 
+		catch (GraphNodeException e) 
+		{
 			e.printStackTrace();
 		}
 	}
 	
 
-	private static void printUsage() {
+	private static void printUsage() 
+	{
 		System.err.println("Usage:");
 		System.err.println("to read from a file: java TestDriver <name of input script>");
 		System.err.println("to read from standard input: java TestDriver");
 	}
 
 
-	public static void main(String args[]) {
-
-		try {
+	public static void main(String args[]) 
+	{
+		try 
+		{
 			// check for correct number of arguments
-			if (args.length > 1) {
+			if (args.length > 1) 
+			{
 				printUsage();
 				return;
 			}
 
 			TestDriver td;
 			if (args.length == 0)
+			{
 				// no arguments - read from standard input
 				td = new TestDriver(new InputStreamReader(System.in),
 								    new OutputStreamWriter(System.out));
-			else {
+			}
+			else 
+			{
 				// one argument - read from file
 				java.nio.file.Path testsFile = Paths.get(args[0]);
-				if (Files.exists(testsFile) && Files.isReadable(testsFile)) {
+				if (Files.exists(testsFile) && Files.isReadable(testsFile)) 
+				{
 					td = new TestDriver(
 							Files.newBufferedReader(testsFile, Charset.forName("US-ASCII")),
 							new OutputStreamWriter(System.out));
-				} else {
+				} 
+				else 
+				{
 					System.err.println("Cannot read from " + testsFile.toString());
 					printUsage();
 					return;
@@ -529,7 +557,8 @@ public class TestDriver {
 
 			td.runTests();
 
-		} catch (IOException e) {
+		} catch (IOException e) 
+		{
 			System.err.println(e.toString());
 			e.printStackTrace(System.err);
 		}
@@ -540,15 +569,18 @@ public class TestDriver {
 /**
  * This exception results when the input file cannot be parsed properly.
  */
-class CommandException extends RuntimeException {
+class CommandException extends RuntimeException 
+{
 
 	private static final long serialVersionUID = 1L;
 
-	public CommandException() {
+	public CommandException()
+	{
 		super();
   	}
 
-  	public CommandException(String s) {
+  	public CommandException(String s)
+  	{
 		super(s);
   	}
 }

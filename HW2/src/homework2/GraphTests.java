@@ -11,10 +11,12 @@ import org.junit.Test;
  * and shortest path finding algorithm implementations of homework assignment
  * #2.
  */
-public class GraphTests extends ScriptFileTests {
+public class GraphTests extends ScriptFileTests 
+{
 
 	// black-box test are inherited from super
-	public GraphTests(java.nio.file.Path testFile) {
+	public GraphTests(java.nio.file.Path testFile) 
+	{
 		super(testFile);
 	}
 

@@ -14,7 +14,8 @@ import java.util.List;
  * through the extend path operation.
  * <p>
  */
-public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
+public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath>
+{
 
 	// RepInvariant:
   	//   (node != null) &&
@@ -63,7 +64,8 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
      * @effects Creates a new NodeCountingPath which originates at
      * <tte>node</tt>.
      */
-  	public NodeCountingPath(WeightedNode node) {
+  	public NodeCountingPath(WeightedNode node) 
+  	{
     	this(node, null);
   	}
 
@@ -75,7 +77,8 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
      * @effects Creates a new NodeCountingPath 'res' such that
      * 			res.elements = path.elements + [node]
      */
-  	private NodeCountingPath(WeightedNode node, NodeCountingPath path) {
+  	private NodeCountingPath(WeightedNode node, NodeCountingPath path)
+  	{
     	if (node == null)
       		throw new IllegalArgumentException();
 
@@ -102,7 +105,8 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
      *	         p.elements == this.elements + [n] &&
      *           p.cost >= this.cost
      */
-  	public NodeCountingPath extend(WeightedNode node) {
+  	public NodeCountingPath extend(WeightedNode node) 
+  	{
   		return new NodeCountingPath(node, this);
   	}
 
@@ -111,7 +115,8 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
 	 * Returns this.cost.
 	 * @return this.cost
 	 */
-  	public double getCost() {
+  	public double getCost() 
+  	{
     	return this.cost;
   	}
 
@@ -121,11 +126,13 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
      * @return an Iterator over the elements in the path in order from start
      *         to end.
      */
-  	public Iterator<WeightedNode> iterator() {
+  	public Iterator<WeightedNode> iterator() 
+  	{
   		// reverse the linked list, so that elements are returned in order
   		// from start to end of the path.
   		List<WeightedNode> nodes = new LinkedList<WeightedNode>();
-  		for (NodeCountingPath curNode = this; curNode != null; curNode = curNode.path) {
+  		for (NodeCountingPath curNode = this; curNode != null; curNode = curNode.path) 
+  		{
   			nodes.add(0, curNode.getEnd());
   		}
   		return nodes.iterator();
@@ -138,15 +145,21 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
 	 * @return a string representation of this in the form
 	 * 		   [NodeCountingPath: node1, node2, node3, ...].
 	 */
-  	public String toString() {
+  	public String toString() 
+  	{
     	StringBuffer buff = new StringBuffer();
     	buff.append("[NodeCountingPath: ");
     	boolean first = true;
-    	for (WeightedNode wn : this) {
+    	for (WeightedNode wn : this)
+    	{
     		if (first)
+    		{
     			first = false;
+    		}
     		else
+    		{
     			buff.append(", ");
+    		}
     		buff.append(wn);
     	}
     	buff.append("]");
@@ -159,9 +172,12 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
      * @return true iff o is a NodeCountingPath and o.elements is the
      * 		   same sequence as this.elements
      */
-  	public boolean equals(Object o) {
+  	public boolean equals(Object o) 
+  	{
     	if (o instanceof NodeCountingPath)
-      		return this.equals((NodeCountingPath)o);
+    	{
+    		return this.equals((NodeCountingPath)o);
+    	}
     	return false;
   	}
 
@@ -170,7 +186,8 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
 	 * Standard equality operation.
      * @return true iff wnp.elements is the same sequence as this.elements
      */
-  	public boolean equals(NodeCountingPath wnp) {
+  	public boolean equals(NodeCountingPath wnp)
+  	{
     	return (wnp != null) &&
       		   this.node.equals(wnp.node) &&
       		   (this.path == null ?
@@ -182,7 +199,8 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
 	 * Returns a hash code value for this.
 	 * @return a hash code value for this.
 	 */
-  	public int hashCode() {
+  	public int hashCode()
+  	{
     	return node.hashCode() + (this.path == null ? 0 : 13*path.hashCode());
   	}
   	
@@ -194,7 +212,8 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
   	 *         is greater than p.cost.
   	 * @see java.lang.Comparable#compareTo
   	 */
-  	public int compareTo(Path<?,?> p){
+  	public int compareTo(Path<?,?> p)
+  	{
   		return Double.compare(this.getCost(), p.getCost());
   	}
   	        
@@ -202,7 +221,8 @@ public class NodeCountingPath implements Path<WeightedNode, NodeCountingPath> {
   	/**
   	 * Return the end of this path
   	 */
-  	public WeightedNode getEnd(){
+  	public WeightedNode getEnd()
+  	{
   		return node;
   	}
 }

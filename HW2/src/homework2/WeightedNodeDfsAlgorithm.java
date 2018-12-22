@@ -3,7 +3,8 @@ package homework2;
 public class WeightedNodeDfsAlgorithm extends DfsAlgorithm<WeightedNode>
 {
 	@Override
-	public String getNodeColor(WeightedNode node) throws NullPointerException{
+	public String getNodeColor(WeightedNode node) throws NullPointerException
+	{
 		if (node == null)
 		{
 			throw new NullPointerException();
@@ -13,7 +14,8 @@ public class WeightedNodeDfsAlgorithm extends DfsAlgorithm<WeightedNode>
 	}
 
 	@Override
-	public void setNodeColor(WeightedNode node, String color) throws NullPointerException {
+	public void setNodeColor(WeightedNode node, String color) throws NullPointerException 
+	{
 		if (node == null || color == null)
 		{
 			throw new NullPointerException();
@@ -24,7 +26,8 @@ public class WeightedNodeDfsAlgorithm extends DfsAlgorithm<WeightedNode>
 
 	@Override
 	public void setNodeHasBackwardsEdge(WeightedNode node, boolean hasBackwardsEdge) 
-			 throws NullPointerException {
+			 throws NullPointerException 
+	{
 		if (node == null)
 		{
 			throw new NullPointerException();

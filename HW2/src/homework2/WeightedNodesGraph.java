@@ -1,6 +1,7 @@
 package homework2;
 
-public class WeightedNodesGraph extends Graph<WeightedNode> {
+public class WeightedNodesGraph extends Graph<WeightedNode> 
+{
 	@Override
 	public void addNode(WeightedNode node) throws NullPointerException, GraphNodeException 
 	{
