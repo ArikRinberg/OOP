@@ -3,6 +3,10 @@ package homework2;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.lang.reflect.Executable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+
 import org.junit.Test;
 
 
@@ -77,4 +81,107 @@ public class GraphTests extends ScriptFileTests
 	}
 	
 	//TODO: Add tests to check iterators
+	
+	@Test
+	public void TestDFSSearch() throws NullPointerException, GraphNodeException, GraphEdgeException
+	{
+		WeightedNodesGraph graph = new WeightedNodesGraph();
+		WeightedNode A = new WeightedNode("A", 2);
+		WeightedNode B = new WeightedNode("B", 3);
+		WeightedNode E = new WeightedNode("E", 2);
+		WeightedNode D = new WeightedNode("D", 1);
+		WeightedNode G = new WeightedNode("G", 3);
+		WeightedNode R = new WeightedNode("R", 4);
+		graph.addNode(A);
+		graph.addNode(B);
+		graph.addNode(E);
+		graph.addNode(D);
+		graph.addNode(G);
+		graph.addNode(R);
+		
+		graph.addEdge(A, B);
+		graph.addEdge(A, D);
+		graph.addEdge(A, G);
+		
+		graph.addEdge(B, A);
+		graph.addEdge(B, E);
+		
+		graph.addEdge(G, D);
+		graph.addEdge(G, R);
+		
+		WeightedNodeDfsAlgorithm dfs = new WeightedNodeDfsAlgorithm();
+		
+		LinkedList<WeightedNode> visited = dfs.DFS(graph, A, D);
+		assertEquals(4, visited.size());
+		assertEquals(A, visited.get(0));
+		assertEquals(G, visited.get(1));
+		assertEquals(R, visited.get(2));
+		assertEquals(D, visited.get(3));
+		
+		visited = dfs.DFS(graph, B);
+		assertEquals(6, visited.size());
+		assertEquals(B, visited.get(0));
+		assertEquals(E, visited.get(1));
+		assertEquals(A, visited.get(2));
+		assertEquals(G, visited.get(3));
+		assertEquals(R, visited.get(4));
+		assertEquals(D, visited.get(5));
+	}
+	
+	@Test
+	public void TestPathFinder() throws NullPointerException, GraphNodeException, GraphEdgeException
+	{
+		WeightedNodesGraph graph = new WeightedNodesGraph();
+		WeightedNode A = new WeightedNode("A", 2);
+		WeightedNode B = new WeightedNode("B", 3);
+		WeightedNode C = new WeightedNode("C", 2);
+		WeightedNode D = new WeightedNode("D", 2);
+		graph.addNode(A);
+		graph.addNode(B);
+		graph.addNode(C);
+		
+		graph.addEdge(A, B);
+		graph.addEdge(B, C);
+		graph.addEdge(C, A);
+		
+		WeightedNodeDfsAlgorithm dfs = new WeightedNodeDfsAlgorithm();
+		
+		ArrayList<NodeCountingPath> startPaths = new ArrayList<>();
+		NodeCountingPath startPath = new NodeCountingPath(A);
+		startPaths.add(startPath);
+		
+		ArrayList<WeightedNode> destNodes = new ArrayList<>();
+		destNodes.add(C);
+		NodeCountingPath shortestPath = PathFinder.getShortestPath(graph, startPaths, destNodes, dfs);
+		assertEquals(4.0, shortestPath.getCost(), 0);
+		
+		destNodes = new ArrayList<>();
+		destNodes.add(B);
+		shortestPath = PathFinder.getShortestPath(graph, startPaths, destNodes, dfs);
+		assertEquals(2.0, shortestPath.getCost(), 0);
+		
+		graph = new WeightedNodesGraph();
+		graph.addNode(A);
+		graph.addNode(B);
+		graph.addNode(C);
+		graph.addNode(D);
+		
+		graph.addEdge(A, B);
+		graph.addEdge(A, C);
+		
+		destNodes = new ArrayList<>();
+		destNodes.add(C);
+		shortestPath = PathFinder.getShortestPath(graph, startPaths, destNodes, dfs);
+		assertEquals(3.0, shortestPath.getCost(), 0);
+		
+		destNodes = new ArrayList<>();
+		destNodes.add(B);
+		shortestPath = PathFinder.getShortestPath(graph, startPaths, destNodes, dfs);
+		assertEquals(2.0, shortestPath.getCost(), 0);
+		
+		destNodes = new ArrayList<>();
+		destNodes.add(D);
+		shortestPath = PathFinder.getShortestPath(graph, startPaths, destNodes, dfs);
+		assertEquals(null, shortestPath);
+	}
 }
