@@ -15,7 +15,6 @@ public class TestDriver
 {
 
 	// String -> Graph: maps the names of graphs to the actual graph
-	// TODO: Parameterize the next line correctly.
   	private final Map<String, WeightedNodesGraph> graphs = new HashMap<>();
   	// String -> WeightedNode: maps the names of nodes to the actual node
   	private final Map<String,WeightedNode> nodes = new HashMap<>();
@@ -417,7 +416,6 @@ public class TestDriver
   		}
   		catch (GraphNodeException e) 
   		{
-			// TODO: handle exception
 		}		
   	}
 	
@@ -476,7 +474,6 @@ public class TestDriver
 		} 
 		catch (GraphNodeException e) 
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

@@ -124,7 +124,6 @@ public abstract class Graph<T>
 	 */
 	public Iterator<T> getNodes()
 	{
-		//TODO: Alter for deep copy
 		List<T> nodes = new ArrayList<T> (_children.keySet());
 		return nodes.iterator();
 	}
@@ -152,7 +151,6 @@ public abstract class Graph<T>
 			throw new GraphNodeException();
 		}
 		
-		//TODO: Alter for deep copy
 		T parentNode = _nodes.get(parentName);
 		List<T> children = new ArrayList<T> (_children.get(parentNode));
 		return children.iterator();

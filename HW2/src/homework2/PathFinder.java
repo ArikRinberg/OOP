@@ -8,10 +8,10 @@ import java.util.LinkedList;
 public class PathFinder<N> {
 		
 	/**
-	 * Retu
-	 * @requires none
-	 * @modifies none
-	 * @return none.
+	 * finds the shortest path between 2 nodes from a set of start nodes and a set of end nodes
+	 * @requires g!=null, srcNodesPs!=null, destNodes!=null, dfsAlgorithm!=null
+	 * @modifies g
+	 * @return the shortest path
 	 * @throws NullPointerException - node==null || color==null
 	 */
 	public static <N, P extends Path<N, P>> P getShortestPath(Graph<N> g, ArrayList<P> srcNodesPs,
