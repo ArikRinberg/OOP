@@ -80,7 +80,35 @@ public class GraphTests extends ScriptFileTests
 		assertThrows(GraphNodeException.class,() -> { graph.addEdge(n2, n1); });
 	}
 	
-	//TODO: Add tests to check iterators
+	@Test
+	public void TestIterators() throws NullPointerException, GraphNodeException, GraphEdgeException
+	{
+		WeightedNodesGraph graph = new WeightedNodesGraph();
+		WeightedNode A = new WeightedNode("A", 2);
+		WeightedNode B = new WeightedNode("B", 3);
+		WeightedNode D = new WeightedNode("D", 1);
+		WeightedNode G = new WeightedNode("G", 3);
+		graph.addNode(A);
+		graph.addNode(B);
+		graph.addNode(D);
+		graph.addNode(G);
+		
+		graph.addEdge(A, B);
+		graph.addEdge(A, D);
+		graph.addEdge(A, G);
+		graph.addEdge(B, A);
+		graph.addEdge(G, D);
+		
+		var children = graph.getChildren(A);
+		
+		assert(children.hasNext());
+		assertEquals(B ,children.next());
+		assert(children.hasNext());
+		assertEquals(D ,children.next());
+		assert(children.hasNext());
+		assertEquals(G ,children.next());
+		assert(!children.hasNext());
+	}
 	
 	@Test
 	public void TestDFSSearch() throws NullPointerException, GraphNodeException, GraphEdgeException
