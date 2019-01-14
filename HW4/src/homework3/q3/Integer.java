@@ -1,7 +1,14 @@
 package homework3.q3;
 
-public class Integer extends Expression {
-	int val;
+public class Integer implements Expression {
+	
+  	// Abstraction Function:
+  	// A Integer I is a wrapper class for integer value
+	//
+	// Representation invariant:
+  	//  none
+	
+	private final int val;
 	
 	public Integer(int val)
 	{

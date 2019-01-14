@@ -1,8 +1,14 @@
 package homework3.q3;
 
-public class Double extends Expression{
+public class Double implements Expression{
 	
-	double val;
+  	// Abstraction Function:
+  	// A Double D is a wrapper class for double value
+	//
+	// Representation invariant:
+  	//  none
+	
+	private final double val;
 	
 	public Double(double val)
 	{

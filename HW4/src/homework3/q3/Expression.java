@@ -1,7 +1,6 @@
 package homework3.q3;
 
-public abstract class Expression {
+interface Expression {
 	
-	abstract double eval();
-	
+	double eval();
 }
