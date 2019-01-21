@@ -25,8 +25,7 @@ public class Chat
     private JFrame _preFrame;
     private Set<ChatUser> _users =  new HashSet<ChatUser>();
     private Set<String> _userNames = new HashSet<String>();
-    private Subject _subject = new Subject(); 
-    private String _lastMassage;
+    private MessageSubject _subject = new MessageSubject(); 
 
     public static void main(String[] args) 
     {
@@ -73,7 +72,7 @@ public class Chat
         prePanel.add(_usernameChooser, preRight);
         _preFrame.add(BorderLayout.CENTER, prePanel);
         _preFrame.add(BorderLayout.SOUTH, enterServer);
-        _preFrame.setSize(300, 300);
+        _preFrame.setSize(500, 300);
         _preFrame.setVisible(true);
     }
     
@@ -90,15 +89,10 @@ public class Chat
     	_subject.attach(newUser);
     }
     
-    public void addMassage(String massage)
+    public void sendMessage(String user, String msg)
     {
-    	_lastMassage = massage;
+    	_subject.SetMessage(new Message(msg, user));
     	_subject.notifyAllObservers();
-    }
-    
-    public String getLastMassage()
-    {
-    	return _lastMassage;
     }
     
     class CreateUserButtonListener implements ActionListener 

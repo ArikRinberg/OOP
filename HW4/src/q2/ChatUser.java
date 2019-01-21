@@ -8,21 +8,22 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
-import javax.swing.text.AttributeSet;
+import javax.swing.text.DefaultStyledDocument;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyleContext;
+import javax.swing.text.StyledDocument;
 
 public class ChatUser implements Observer
 {
+	
 	String _username;
 	Chat _chat;
 	JFrame _newFrame;
@@ -30,9 +31,11 @@ public class ChatUser implements Observer
 	JPanel _southPanel;
 	JTextField  _messageBox;
 	JButton _sendButton;
+	StyledDocument _doc;
 	JTextPane _chatBox;
-	String _MyLastMassage;
-
+	
+	ArrayList<Message> _messages;
+	
 	public ChatUser(String username, Chat chat)
 	{
 		_username = username;
@@ -51,8 +54,9 @@ public class ChatUser implements Observer
 	
 	    _sendButton = new JButton("Send Message");
 	    _sendButton.addActionListener(new sendMessageButtonListener());
-	
-	    _chatBox = new JTextPane();
+
+	    _doc = new DefaultStyledDocument();
+	    _chatBox = new JTextPane(_doc);
 	    _chatBox.setEditable(false);
 	    _chatBox.setFont(new Font("Serif", Font.PLAIN, 15));
 	    //_chatBox.setLineWrap(true);
@@ -81,39 +85,44 @@ public class ChatUser implements Observer
 	    _newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    _newFrame.setSize(470, 300);
 	    _newFrame.setVisible(true);
+	    
+	    _messages = new ArrayList<Message>();
 	}
 	
 	public void update(Subject s)
 	{
-		String Massage = _chat.getLastMassage();
-		if(Massage.equals(_MyLastMassage))
-		{
-			appendToPane(_chatBox, Massage, Color.green);
-			_MyLastMassage = "";
-		}
-		else
-		{
-			appendToPane(_chatBox, Massage, Color.black);
-		}
+		MessageSubject msgSubject = (MessageSubject)s;
+		_messages.add(msgSubject.GetMessage());
+		updatePane();
 	}
 	
-    private void appendToPane(JTextPane tp, String msg, Color newLineColor)
-    {
-        StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.black);
-
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
-        
-        int len = tp.getText().length();
-        tp.setCaretPosition(len);
-        tp.setCharacterAttributes(aset, true);
-        tp.setVisible(true);
-        //tp.getText().ap("<html>Uncolored Text! <font color=orange>Now some example Text with color!</font> more Uncolored Text!</html>");
-
-        tp.setText( tp.getText() + msg + "\n");
-
-    }
+	private void updatePane()
+	{
+    	SimpleAttributeSet set = new SimpleAttributeSet();
+    	String text = "";
+    	for (Message m : _messages)
+    	{
+    		text += m.GetDisplayMessage() + "\n";
+    	}
+    	_chatBox.setText(text);
+    	
+		int caret = 0;
+		for (Message m : _messages)
+		{
+			int length = m.GetDisplayMessage().length();
+			if (m.GetUser().equals(_username))
+			{
+		        StyleConstants.setForeground(set, Color.green);
+		        _doc.setCharacterAttributes(caret, length, set, true);
+			}
+			else
+			{
+		        StyleConstants.setForeground(set, Color.black);
+		        _doc.setCharacterAttributes(caret, length, set, true);
+			}
+			caret += length + 1;
+		}
+	}
 	
 	class sendMessageButtonListener implements ActionListener 
 	{
@@ -121,9 +130,8 @@ public class ChatUser implements Observer
 	    {
 	        if (_messageBox.getText().length() > 0) 
 	        {
-	        	_MyLastMassage = "<" + _username + ">:  " + _messageBox.getText();
+	            _chat.sendMessage(_username, new String(_messageBox.getText()));
 	            _messageBox.setText("");
-	            _chat.addMassage(new String(_MyLastMassage));
 	        }
 	        _messageBox.requestFocusInWindow();
 	    }
