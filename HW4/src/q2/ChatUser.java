@@ -25,7 +25,7 @@ public class ChatUser implements Observer
 {
 	String _username;
 	Chat _chat;
-	JFrame _newFrame = new JFrame(_username); 
+	JFrame _newFrame;
 	JPanel _userChatPanel;
 	JPanel _southPanel;
 	JTextField  _messageBox;
@@ -36,6 +36,8 @@ public class ChatUser implements Observer
 	public ChatUser(String username, Chat chat)
 	{
 		_username = username;
+		_newFrame = new JFrame(_username);
+		_newFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		_chat = chat;
 	    _userChatPanel = new JPanel();
 	    _userChatPanel.setLayout(new BorderLayout());
@@ -95,20 +97,22 @@ public class ChatUser implements Observer
 		}
 	}
 	
-    private void appendToPane(JTextPane tp, String msg, Color c)
+    private void appendToPane(JTextPane tp, String msg, Color newLineColor)
     {
         StyleContext sc = StyleContext.getDefaultStyleContext();
-        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, Color.black);
 
         aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
         aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
         
         int len = tp.getText().length();
         tp.setCaretPosition(len);
-        tp.setCharacterAttributes(aset, false);
-        tp.replaceSelection(msg);
+        tp.setCharacterAttributes(aset, true);
+        tp.setVisible(true);
+        //tp.getText().ap("<html>Uncolored Text! <font color=orange>Now some example Text with color!</font> more Uncolored Text!</html>");
 
         tp.setText( tp.getText() + msg + "\n");
+
     }
 	
 	class sendMessageButtonListener implements ActionListener 

@@ -109,6 +109,7 @@ public class Chat
             if (username.length() > 0) 
             {
             	addUser(username);
+            	_usernameChooser.setText("");
             }
         }
     }
