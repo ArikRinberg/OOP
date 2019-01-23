@@ -29,8 +29,13 @@ public class ChatUser implements Observer
 	JFrame _newFrame;
 	JPanel _userChatPanel;
 	JPanel _southPanel;
+	JPanel _northPanel;
 	JTextField  _messageBox;
 	JButton _sendButton;
+	JButton _toggleBold;
+	boolean _isBoldText;
+	JButton _toggleItalic;
+	boolean _isItalicText;
 	StyledDocument _doc;
 	JTextPane _chatBox;
 	
@@ -49,11 +54,23 @@ public class ChatUser implements Observer
 	    _southPanel.setBackground(Color.BLUE);
 	    _southPanel.setLayout(new GridBagLayout());
 	
+	    _northPanel = new JPanel();
+	    _northPanel.setBackground(Color.DARK_GRAY);
+	    _northPanel.setLayout(new GridBagLayout());
+	    
 	    _messageBox = new JTextField(30);
 	    _messageBox.requestFocusInWindow();
 	
 	    _sendButton = new JButton("Send Message");
 	    _sendButton.addActionListener(new sendMessageButtonListener());
+	    
+	    _toggleBold = new JButton("B");
+	    _toggleBold.addActionListener(new toggleBoldListener());
+	    _isBoldText = false;
+	    
+	    _toggleItalic = new JButton("I");
+	    _toggleItalic.addActionListener(new toggleItalicListener());
+	    _isItalicText = false;
 
 	    _doc = new DefaultStyledDocument();
 	    _chatBox = new JTextPane(_doc);
@@ -76,10 +93,14 @@ public class ChatUser implements Observer
 	    right.weightx = 1.0D;
 	    right.weighty = 1.0D;
 	
+	    _northPanel.add(_toggleBold, left);
+	    _northPanel.add(_toggleItalic, left);
+	    
 	    _southPanel.add(_messageBox, left);
 	    _southPanel.add(_sendButton, right);
 	
 	    _userChatPanel.add(BorderLayout.SOUTH, _southPanel);
+	    _userChatPanel.add(BorderLayout.NORTH, _northPanel);
 	
 	    _newFrame.add(_userChatPanel);
 	    _newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -99,6 +120,8 @@ public class ChatUser implements Observer
 	private void updatePane()
 	{
     	SimpleAttributeSet set = new SimpleAttributeSet();
+    	StyleConstants.setBold(set, _isBoldText);
+    	StyleConstants.setItalic(set, _isItalicText);
     	String text = "";
     	for (Message m : _messages)
     	{
@@ -136,6 +159,23 @@ public class ChatUser implements Observer
 	        _messageBox.requestFocusInWindow();
 	    }
 	}
-
 	
+	class toggleBoldListener implements ActionListener
+	{
+	    public void actionPerformed(ActionEvent event)
+	    {
+	    	_isBoldText = !_isBoldText;
+	    	updatePane();
+	    }
+	}
+	
+	class toggleItalicListener implements ActionListener
+	{
+	    public void actionPerformed(ActionEvent event)
+	    {
+	    	_isItalicText = !_isItalicText;
+	    	updatePane();
+	    }
+	}
+
 }
